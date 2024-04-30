@@ -1,6 +1,7 @@
 package pattern;
 
-public class Pattern24 {
+public class Pattern25 {
+
 	public static void main(String[] args) {
 		int num =6;
 		for(int i=1; i<=num; i++) {
@@ -10,13 +11,5 @@ public class Pattern24 {
 			System.out.println();
 		}
 	}
-	
-//		output:
-//		12345
-//		1234
-//		123
-//		12
-//		1
 
-	
 }
