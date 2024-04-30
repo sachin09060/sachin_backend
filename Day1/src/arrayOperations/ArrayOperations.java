@@ -1,4 +1,4 @@
-package demo;
+package arrayOperations;
 import java.util.Scanner;
 
 public class ArrayOperations {
@@ -23,6 +23,7 @@ public class ArrayOperations {
 //	creating array method
 
 	public int[] createArray() {
+		int[] array = {};
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the length of the array: ");
         int length = scanner.nextInt();
@@ -39,7 +40,8 @@ public class ArrayOperations {
 
 //	printing array method
 
-    public void printArray(int[] array) {
+    public void printArray() {
+    	int[] array = {1, 2, 3, 4, 5, 5, 5, 7, 8, 7, 8};
         System.out.print("Array: ");
         for (int i = 0; i < array.length; i++) {
             System.out.print(array[i] + " ");
@@ -164,7 +166,7 @@ public void sorting() {
         int min = array1[0];
         for (int i = 1; i < array1.length; i++) {
             if (array1[i] < min) {
-                min = arr[i];
+                min = array1[i];
             }
         }
         return min;
@@ -172,43 +174,43 @@ public void sorting() {
 
 // union array method
 	
-	public int[] unionArray() {
-		System.out.println();
-		System.out.println("From Union");
-	
-		int[] array1 = {1, 2, 3, 4, 5};
-		int[] array2 = {5, 6, 7, 8};
-		int[] array3 = new int[array1.length + array2.length];
-	
-		int i = 0, j = 0, k = 0;
-	
-		while (i < array1.length && j < array2.length) {
-			if (array1[i] < array2[j]) {
-				array3[k++] = array1[i++];
-			} else if (array1[i] > array2[j]) {
-				array3[k++] = array2[j++];
-			} else {
-				array3[k++] = array1[i++];
-				j++;
-			}
-		}
-
-		while (i < array1.length) {
-			array3[k++] = array1[i++];
-		}
-	
-		while (j < array2.length) {
-			array3[k++] = array2[j++];
-		}
-
-		System.out.println("Union Array:");
-		for (int l = 0; l < k; l++) {
-			System.out.println(array3[l]);
-		}
-		int[] unionArray = Arrays.copyOf(array3, k);
-
-		return unionArray;
-	}
+//	public int[] unionArray() {
+//		System.out.println();
+//		System.out.println("From Union");
+//	
+//		int[] array1 = {1, 2, 3, 4, 5};
+//		int[] array2 = {5, 6, 7, 8};
+//		int[] array3 = new int[array1.length + array2.length];
+//	
+//		int i = 0, j = 0, k = 0;
+//	
+//		while (i < array1.length && j < array2.length) {
+//			if (array1[i] < array2[j]) {
+//				array3[k++] = array1[i++];
+//			} else if (array1[i] > array2[j]) {
+//				array3[k++] = array2[j++];
+//			} else {
+//				array3[k++] = array1[i++];
+//				j++;
+//			}
+//		}
+//
+//		while (i < array1.length) {
+//			array3[k++] = array1[i++];
+//		}
+//	
+//		while (j < array2.length) {
+//			array3[k++] = array2[j++];
+//		}
+//
+//		System.out.println("Union Array:");
+//		for (int l = 0; l < k; l++) {
+//			System.out.println(array3[l]);
+//		}
+//		int[] unionArray = Arrays.copyOf(array3, k);
+//
+//		return unionArray;
+//	}
 
 //	intersection array method
 
@@ -257,7 +259,9 @@ public void sorting() {
 	public void occurance() {
 		int[] array1 = {1, 2, 3, 4, 5, 5, 5, 7, 8, 7, 8};
 		System.out.println("Occurrence of each element:");
-		Arrays.sort(array1);
+		
+		Array.sort(array1);
+		
 		int current = array1[0];
 		int count = 1;
 	
@@ -274,7 +278,7 @@ public void sorting() {
 		System.out.println(current + ": " + count);
 	}
 
-// remove duplicate array mmethod
+// remove duplicate array method
 
 	public void removeDuplicatesArray() {
 		int[] array1 = {1, 2, 3, 4, 5, 5, 5, 7, 8, 7, 8};
@@ -317,16 +321,5 @@ public void sorting() {
 
 //	count prime array method
 
-	public void countPrimeImplecants() {
-		int[] array1 = {1, 2, 3, 4, 5, 5, 5, 7, 8, 7, 8};
-		System.out.println("Prime Elements:");
-		for (int num : array1) {
-			if (isPrime(num)) {
-				System.out.print(num + " ");
-			}
-		}
-		System.out.println();
-	}
-		
 	
 }

@@ -1,4 +1,4 @@
-package demo;
+package arrayOperations;
 
 class FirstClass {
     int[] numbers = new int[10];

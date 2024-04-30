@@ -1,4 +1,4 @@
-package demo;
+package arrayOperations;
 import java.util.Scanner;
 
 public class SecondClass {

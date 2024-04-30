@@ -1,4 +1,4 @@
-package demo;
+package arrayOperations;
 
 public class Pattern {
 	public static void main(String[] args) {
@@ -11,7 +11,7 @@ public class Pattern {
 			}
 			System.out.println( );
 		}
-		
+		// 1
 //      Output:		
 //		12345
 //		12345
@@ -27,7 +27,7 @@ public class Pattern {
 			}
 			System.out.println( );
 		}
-		
+		//2
 //      Output:		
 //		11111
 //		22222
@@ -43,7 +43,7 @@ public class Pattern {
 			}
 			System.out.println( );		
 		}
-		
+		//3
 //      Output:
 //		1
 //		12
@@ -63,7 +63,7 @@ public class Pattern {
 			}
 			System.out.println( );		
 		}
-		
+		//4
 //		Output:
 //		123456789
 //		23456789
@@ -86,7 +86,7 @@ public class Pattern {
 			}
 			System.out.println( );		
 		}
-		
+		//5
 //		Output:		
 //		1 
 //		2 3 
@@ -107,7 +107,7 @@ System.out.println("_________________________________________________________");
 			}
 			System.out.println();
 		}
-
+		//6
 //		Output:	
 //	1,1  1,2  1,3  1,4  1,5  
 //	2,1  2,2  2,3  2,4  2,5  
@@ -117,9 +117,9 @@ System.out.println("_________________________________________________________");
 
 System.out.println("_________________________________________________________");
 
-		int n = 5;
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= n; j++) {
+
+		for (int i = 1; i <= 5; i++) {
+			for (int j = 1; j <= 5; j++) {
 				if (j % 2 == 0) {
 					System.out.print(0);
 				} else {
@@ -128,7 +128,7 @@ System.out.println("_________________________________________________________");
 			}
 			System.out.println();
 		}
-
+		//6
 //	Output:	
 //	10101
 //	10101
@@ -138,4 +138,9 @@ System.out.println("_________________________________________________________");
 
 
 	}
+	
+	
+	
+	
+	
 }
