@@ -1,4 +1,4 @@
-package set;
+package treeSet;
 import java.util.*;
 
 public class Register {

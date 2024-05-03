@@ -1,4 +1,4 @@
-package set;
+package hashSet;
 import java.util.*;
 
 public class Student {
