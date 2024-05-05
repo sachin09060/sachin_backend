@@ -34,4 +34,13 @@ public class Pattern33 {
         Pattern33 p = new Pattern33();
         p.pattern33();
     }
+    
+//       output:
+//          * 
+//        * * * 
+//      * * * * * 
+//    * * * * * * * 
+//      * * * * * 
+//        * * * 
+//          *    
 }
