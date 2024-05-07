@@ -1,0 +1,12 @@
+package streamsApi;
+
+import java.util.*;
+
+public class FindMaxElement {
+
+	public static void main(String[] args) {
+		List<Integer> asList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+		Integer i = asList.stream().max((o1, o2) -> o1.compareTo(o2)).get();
+		System.out.println(i);
+	}
+}
