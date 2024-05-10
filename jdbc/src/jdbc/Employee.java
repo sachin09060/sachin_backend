@@ -124,41 +124,69 @@ public class Employee {
 	
 	private void updateRecord() throws SQLException{
 		
-		System.out.println("What do you want update?");
-		System.out.println("Enter 1 for updating name");
+		System.out.println("Enter 1 to update name");
+		System.out.println("Enter 2 to update salary");
+		System.out.println("Enter 3 to update department");
 		
+		int choice = scanner.nextInt();
 		
-//		case 1:
-//			System.out.println("enter name");
-//			String newname = scanner.nextLine();
-//			updatedQ = updatedQ + "name =? where id = " + id ;
-//			PreparedStatement p = connection.prepareStatement(updatedQ)
-//			
-//			int row = PreparedStatement.executeUpdate();
-//			if(row !=0)
-//				System.out.println(break;);
+		System.out.println("enter id to update");
+		int id = scanner.nextInt();
+		
+		Statement statement = connection.createStatement();
+		
+		switch (choice) {
+		case 1: {
 			
+			String query = "update employee set ename = ? where eid = " + id;
+	
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			
+			System.out.println("Enter new name");
+			preparedStatement.setString(1, scanner.next());
+			
+			preparedStatement.execute();
+			
+			System.out.println("Employee name updated...");
+			
+			break;
+		}
 		
-//        System.out.println("Enter Employee ID:");
-//        int id = scanner.nextInt();
-//        System.out.println("Enter new Salary:");
-//        double salary = scanner.nextDouble();
-////        System.out.println("Enter new Salary:");
-////        String name = scanner.nextLine();
-////        System.out.println("Enter new Salary:");
-////        String department = scanner.nextLine();
-//        
-//        String query = "update employee set esalary = ? where eid = ?";
-//        PreparedStatement statement = connection.prepareStatement(query);
-//        statement.setDouble(1, salary);
-//        statement.setInt(2, id);
-//
-//        int rowsUpdated = statement.executeUpdate();
-//        if (rowsUpdated > 0) {
-//            System.out.println("Employee details updated !");
-//        } else {
-//            System.out.println("No employee found with ID: " + id);
-//        }
+		case 2: {
+	
+			String query = "update employee set esalary = ? where eid = " + id;
+			
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			
+			System.out.println("enter new salary");
+			preparedStatement.setDouble(1, scanner.nextDouble());
+			
+			preparedStatement.execute();
+			
+			System.out.println("Salary updated...");
+			
+			break;
+		}
+		
+		case 3: {
+	
+			String query = "update employee set dept = ? where eid = " + id;
+
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			
+			System.out.println("enter new department");
+			preparedStatement.setString(1, scanner.next());
+			
+			preparedStatement.execute();
+			
+			System.out.println("Department updated...");
+			
+			break;
+		}
+		
+		default:
+			System.out.println("invalid choice !!");
+		}
 	}
 	
 	private void selectAllRecord() throws SQLException{
