@@ -8,7 +8,7 @@ public class Address {
 		super();
 		this.id=id;
 		this.place=place;
-	}
+	} 
 	
 	@Override
 	public String toString() {
