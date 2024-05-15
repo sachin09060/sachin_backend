@@ -14,25 +14,32 @@ public class App {
         Student newStudent = new Student();
         newStudent.setName("Sachin");
         newStudent.setAddress("Mysore");
-        int insertedId = dao.insert(newStudent);
-        System.out.println("Student inserted with ID: " + insertedId);
+        
+//        for insert
+//        int insertedId = dao.insert(newStudent);
+//        System.out.println("Student inserted with ID: " + insertedId);
 
+//        for getting all data
 //        System.out.println("All Students:");
 //        for (Student student : dao.getAllStudents()) {
 //            System.out.println(student);
 //        }
 //
-//        int studentId = 1; 
+//        for getting single data
+//        int studentId = 2; 
 //        Student retrievedStudent = dao.getStudentById(studentId);
 //        System.out.println("Retrieved student with ID " + studentId + ": " + retrievedStudent);
-//
-//        retrievedStudent.setAddress("Mangalore");
+        
+//        for updating data
+//        retrievedStudent.setName("Manikanta");
+//        retrievedStudent.setAddress("Chennai");
 //        dao.update(retrievedStudent);
 //        System.out.println("Student updated: " + retrievedStudent);
 //
+//        for deleting data
 //        dao.delete(retrievedStudent);
 //        System.out.println("Student deleted: " + retrievedStudent);
-
-        context.close();
+//
+//        context.close();
     }
 }

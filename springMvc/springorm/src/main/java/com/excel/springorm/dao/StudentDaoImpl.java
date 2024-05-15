@@ -13,7 +13,6 @@ public class StudentDaoImpl implements StudentDao {
     @Autowired
     private HibernateTemplate hibernateTemplate;
 
-    // Setter method for hibernateTemplate
     public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
         this.hibernateTemplate = hibernateTemplate;
     }
