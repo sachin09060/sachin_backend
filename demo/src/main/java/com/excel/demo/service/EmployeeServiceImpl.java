@@ -100,4 +100,114 @@ public class EmployeeServiceImpl implements EmployeeService{
         		.build();
 	}
 
+	@Override
+	public EmployeeDto updateLastName(EmployeeDto dto) {
+		Optional<Employee> optional = employeeRepository.findById(dto.getId());
+		if(!optional.isPresent()) {
+			return null;
+		}
+		
+		Employee employee = optional.get();
+		employee.setLastName(dto.getLastName());
+        Employee emp = employeeRepository.save(employee);
+		
+        return EmployeeDto.builder()
+        		.id(emp.getId())
+        		.firstName(emp.getFirstName())
+        		.lastName(emp.getLastName())
+        		.mobileNo(emp.getMobileNo())
+        		.aadharNo(emp.getAadharNo())
+        		.panNo(emp.getPanNo())
+        		.employeeNo(emp.getEmployeeNo())
+        		.build();
+	}
+
+	@Override
+	public EmployeeDto updatePhoneNo(EmployeeDto dto) {
+		Optional<Employee> optional = employeeRepository.findById(dto.getId());
+		if(!optional.isPresent()) {
+			return null;
+		}
+		
+		Employee employee = optional.get();
+		employee.setMobileNo(dto.getMobileNo());
+        Employee emp = employeeRepository.save(employee);
+		
+        return EmployeeDto.builder()
+        		.id(emp.getId())
+        		.firstName(emp.getFirstName())
+        		.lastName(emp.getLastName())
+        		.mobileNo(emp.getMobileNo())
+        		.aadharNo(emp.getAadharNo())
+        		.panNo(emp.getPanNo())
+        		.employeeNo(emp.getEmployeeNo())
+        		.build();
+	}
+
+	@Override
+	public EmployeeDto updateAadharNo(EmployeeDto dto) {
+		Optional<Employee> optional = employeeRepository.findById(dto.getId());
+		if(!optional.isPresent()) {
+			return null;
+		}
+		
+		Employee employee = optional.get();
+		employee.setAadharNo(dto.getAadharNo());
+        Employee emp = employeeRepository.save(employee);
+		
+        return EmployeeDto.builder()
+        		.id(emp.getId())
+        		.firstName(emp.getFirstName())
+        		.lastName(emp.getLastName())
+        		.mobileNo(emp.getMobileNo())
+        		.aadharNo(emp.getAadharNo())
+        		.panNo(emp.getPanNo())
+        		.employeeNo(emp.getEmployeeNo())
+        		.build();
+	}
+
+	@Override
+	public EmployeeDto updatePanNo(EmployeeDto dto) {
+		Optional<Employee> optional = employeeRepository.findById(dto.getId());
+		if(!optional.isPresent()) {
+			return null;
+		}
+		
+		Employee employee = optional.get();
+		employee.setPanNo(dto.getPanNo());
+        Employee emp = employeeRepository.save(employee);
+		
+        return EmployeeDto.builder()
+        		.id(emp.getId())
+        		.firstName(emp.getFirstName())
+        		.lastName(emp.getLastName())
+        		.mobileNo(emp.getMobileNo())
+        		.aadharNo(emp.getAadharNo())
+        		.panNo(emp.getPanNo())
+        		.employeeNo(emp.getEmployeeNo())
+        		.build();
+	}
+
+	@Override
+	public EmployeeDto updateEmployeeNo(EmployeeDto dto) {
+		Optional<Employee> optional = employeeRepository.findById(dto.getId());
+		if(!optional.isPresent()) {
+			return null;
+		}
+		
+		Employee employee = optional.get();
+		employee.setEmployeeNo(dto.getEmployeeNo());
+        Employee emp = employeeRepository.save(employee);
+		
+        return EmployeeDto.builder()
+        		.id(emp.getId())
+        		.firstName(emp.getFirstName())
+        		.lastName(emp.getLastName())
+        		.mobileNo(emp.getMobileNo())
+        		.aadharNo(emp.getAadharNo())
+        		.panNo(emp.getPanNo())
+        		.employeeNo(emp.getEmployeeNo())
+        		.build();
+	}
+
 }

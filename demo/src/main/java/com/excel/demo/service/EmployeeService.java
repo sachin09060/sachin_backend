@@ -15,5 +15,15 @@ public interface EmployeeService {
 
 	public EmployeeDto updateFirstName(EmployeeDto dto);
 
+	public EmployeeDto updateLastName(EmployeeDto dto);
+
+	public EmployeeDto updatePhoneNo(EmployeeDto dto);
+
+	public EmployeeDto updateAadharNo(EmployeeDto dto);
+
+	public EmployeeDto updatePanNo(EmployeeDto dto);
+
+	public EmployeeDto updateEmployeeNo(EmployeeDto dto);
+
 	
 }

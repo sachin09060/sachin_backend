@@ -77,8 +77,38 @@ public class BaseController {
 	}
 	
 	@PutMapping("/update/firstName")
-	public String updateEmployeeFirstName(@RequestBody EmployeeDto dto) {
+	public ResponseEntity<String> updateEmployeeFirstName(@RequestBody EmployeeDto dto) {
 		employeeService.updateFirstName(dto);
-		return null;
+		return ResponseEntity.status(HttpStatus.OK).body(dto.getFirstName());
+	}
+	
+	@PutMapping("/update/lastName")
+	public ResponseEntity<String> updateEmployeeLastName(@RequestBody EmployeeDto dto) {
+		employeeService.updateLastName(dto);
+		return ResponseEntity.status(HttpStatus.OK).body(dto.getLastName());
+	}
+	
+	@PutMapping("/update/phone")
+	public ResponseEntity<String> updatePhoneNo(@RequestBody EmployeeDto dto) {
+		employeeService.updatePhoneNo(dto);
+		return ResponseEntity.status(HttpStatus.OK).body(dto.getMobileNo());
+	}
+	
+	@PutMapping("/update/aadhar")
+	public ResponseEntity<String> updateAadharNo(@RequestBody EmployeeDto dto) {
+		employeeService.updateAadharNo(dto);
+		return ResponseEntity.status(HttpStatus.OK).body(dto.getAadharNo());
+	}
+	
+	@PutMapping("/update/pan")
+	public ResponseEntity<String> updatePanNo(@RequestBody EmployeeDto dto) {
+		employeeService.updatePanNo(dto);
+		return ResponseEntity.status(HttpStatus.OK).body(dto.getPanNo());
+	}
+	
+	@PutMapping("/update/eid")
+	public ResponseEntity<String> updateEmployeeNo(@RequestBody EmployeeDto dto) {
+		employeeService.updateEmployeeNo(dto);
+		return ResponseEntity.status(HttpStatus.OK).body(dto.getEmployeeNo());
 	}
 }
