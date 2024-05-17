@@ -7,10 +7,12 @@ import com.excel.lms.enums.Designation;
 import com.excel.lms.enums.EmployeeStatus;
 import com.excel.lms.enums.Gender;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,17 +21,18 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@AllArgsConstructor
+@Builder
 @Table(name = "employee_primary_info")
 public class EmployeePrimaryInfo {
 	
@@ -56,24 +59,26 @@ public class EmployeePrimaryInfo {
 	@Enumerated(EnumType.STRING)
 	private EmployeeStatus employeeStatus;
 	
-	@OneToOne( mappedBy = "employee")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
 	private EmployeeSecondaryInfo secondary;
 	
-	@OneToOne(mappedBy = "employee")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
 	private EmployeeBankInfo bankInfo;
 	
-//	@OneToMany("employee")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
 	private List<EmployeeExperienceInfo> employeeExperience;
 	
-	@OneToMany(mappedBy = "employee")
-	private List<EmployeeAddress> employeeAdress;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
+	private List<EmployeeAddress> employeeAddress;
 	
-	@ManyToMany(mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
+	private List<EmployeeEducationDetails> education;
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employees")
 	private List<EmployeeTechnicalSkill> employeeSkill;
 	
 	@OneToMany(mappedBy = "employee")
 	private List<EmployeeContactInfo> contactInfo;
-	
-	
+
 	
 }
