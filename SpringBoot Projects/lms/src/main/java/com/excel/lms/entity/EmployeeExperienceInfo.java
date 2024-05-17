@@ -1,6 +1,6 @@
 package com.excel.lms.entity;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.cglib.core.Local;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,34 +9,29 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "employee_address_info")
-@RequestMapping("/educationAddress")
-public class EmployeeAddress {
+@NoArgsConstructor
+@Entity
+@Table(name = "employee_experience_info")
+public class EmployeeExperienceInfo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer addressId;
-	private String addressType;
-	private String doorNo;
-	private String street;
-	private String locality;
-	private String city;
-	private String state;
-	private Integer pinCode;
-	private String landMark;
+	private Integer experienceId;
+	private String companyName;
+	private Double yearOfExperience;
+	private Local dateOfJoining;
+	private Local dateOfRelieving;
+	private String designation;
+	private String location;
+	
 	
 	@ManyToOne
 	private EmployeePrimaryInfo employee;
-	
 }

@@ -1,6 +1,5 @@
 package com.excel.lms.entity;
 
-import java.time.LocalDate;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -8,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +27,7 @@ public class EmployeeSecondaryInfo {
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private Integer id;
+		private Integer empSecondaryId;
 		private String pan;
 		private String aadhar;
 		private String fatherName;
@@ -35,4 +35,7 @@ public class EmployeeSecondaryInfo {
 		private String spouse;
 		private String passportNo;
 		private String mariatlStatus;
+		
+		@OneToOne
+		private EmployeePrimaryInfo employee;
 }

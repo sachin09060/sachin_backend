@@ -12,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,15 +32,16 @@ public class EducationDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Enumerated(EnumType.STRING)
-	private Education educationType;
-	private String universityName;
-	private String instituteName;
-	private String percentage;
-	private String specialization;
+	private Integer educationId;
+	private String educationType;
 	private LocalDate yearOfPassing;
+	private Double Percentage;
+	private String instituteName;
+	private String univercityName;
+	private String specialization;
 	private String state;
+	
+	@ManyToOne
+	private EmployeePrimaryInfo employee;
 	
 }

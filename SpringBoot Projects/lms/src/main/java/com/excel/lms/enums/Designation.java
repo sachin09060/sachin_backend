@@ -6,7 +6,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum Designation {
-	DEVELOPER("DEVELOPER"), TESTER("TESTER");
+	
+	TRAINEE("TRAINEE"),
+	MENTOR("MENTOR"),
+	DEVELOPER("DEVELOPER"),
+	TESTER("TESTER"),
+	OTHERS("OTHERS");
 	
 	private final String designationType;
 }

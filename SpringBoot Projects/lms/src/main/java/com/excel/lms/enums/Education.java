@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum Education {
-	UNDERGRADUATE("UNDERGRADUATE"), POSTGRADUATE("POSTGRADUATE");
+	
+	UNDER_GRADUATE("UNDER_GRADUATE"),
+	POST_GRADUATE("POST_GRADUATE"),
+	OTHER("OTHER");
 	
 	private final String educationType;
 }
