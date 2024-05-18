@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum MaritalStatus {
 	
 	MARRIED("MARRIED"),
-	UN_MARRIED("UNMARRIED"),
+	UNMARRIED("UNMARRIED"),
 	DIVORCED("DIVORCED");
 	
 	private final String maritalStatus;

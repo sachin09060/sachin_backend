@@ -26,7 +26,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Entity
 @Getter
 @Setter
@@ -35,7 +34,7 @@ import lombok.Setter;
 @Builder
 @Table(name = "employee_primary_info")
 public class EmployeePrimaryInfo {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -43,42 +42,40 @@ public class EmployeePrimaryInfo {
 	private String employeeName;
 	private LocalDate dateOfJoining;
 	private LocalDate dateOfBirth;
-	
+
 	@Column(unique = true)
 	private String email;
 	private String bloodGroup;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Designation designation;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	private String nationality;
-	
 
 	@Enumerated(EnumType.STRING)
 	private EmployeeStatus employeeStatus;
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
 	private EmployeeSecondaryInfo secondary;
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
 	private EmployeeBankInfo bankInfo;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
 	private List<EmployeeExperienceInfo> employeeExperience;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
 	private List<EmployeeAddress> employeeAddress;
-	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employee")
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
 	private List<EmployeeEducationDetails> education;
-	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy = "employees")
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employees")
 	private List<EmployeeTechnicalSkill> employeeSkill;
-	
+
 	@OneToMany(mappedBy = "employee")
 	private List<EmployeeContactInfo> contactInfo;
 
-	
 }
