@@ -45,8 +45,8 @@ public class EmployeeSecondaryInfo {
 	@Enumerated(EnumType.STRING)
 	private MaritalStatus mariatlStatus;
 	
-	@JoinColumn(name = "employee_id")
+	@JoinColumn(name = "employeeId")
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private EmployeePrimaryInfo employee;
-
+	
 }

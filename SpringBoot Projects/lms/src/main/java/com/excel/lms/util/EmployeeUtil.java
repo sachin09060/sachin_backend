@@ -1,7 +1,9 @@
 package com.excel.lms.util;
 
+import com.excel.lms.dto.EmployeeBankInfoDto;
 import com.excel.lms.dto.EmployeePrimaryInfoDto;
 import com.excel.lms.dto.EmployeeSecondaryInfoDto;
+import com.excel.lms.entity.EmployeeBankInfo;
 import com.excel.lms.entity.EmployeePrimaryInfo;
 import com.excel.lms.entity.EmployeeSecondaryInfo;
 
@@ -40,14 +42,14 @@ public class EmployeeUtil {
 	
 	public static EmployeeSecondaryInfo employeeSecondaryInfoDtoToEntity(EmployeeSecondaryInfoDto dto) {
 		return EmployeeSecondaryInfo.builder()
-				.pan(dto.getPan())
-				.aadhar(dto.getAadhar())
-				.fatherName(dto.getFatherName())
-				.motherName(dto.getMotherName())
-				.spouse(dto.getSpouse())
-				.passportNo(dto.getPassportNo())
-				.mariatlStatus(dto.getMariatlStatus())
-				.build();
+			.pan(dto.getPan())
+			.aadhar(dto.getAadhar())
+			.fatherName(dto.getFatherName())
+			.motherName(dto.getMotherName())
+			.spouse(dto.getSpouse())
+			.passportNo(dto.getPassportNo())
+			.mariatlStatus(dto.getMariatlStatus())
+			.build();
 		}
 	
 //	public static EmployeeSecondaryInfoDto employeeSecondaryInfoEntityToDto(EmployeeSecondaryInfo employee) {
@@ -62,4 +64,8 @@ public class EmployeeUtil {
 //				.mariatlStatus(employee.getMariatlStatus())
 //				.build();
 //	}
+	
+	public static EmployeeBankInfo employeeBankInfoDtoToEntity(EmployeeBankInfoDto dto) {
+		return null;
+	}
 }
