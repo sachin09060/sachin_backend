@@ -26,6 +26,20 @@ public class LibraryUtils {
 				.build();
 	}
 	
+	public static UserDto userEntityToDto(User userEntity) {
+		return UserDto.builder()
+				.userId(userEntity.getUserId())
+				.name(userEntity.getName())
+				.gender(userEntity.getGender())
+				.phone(userEntity.getPhone())
+				.email(userEntity.getEmail())
+				.address(userEntity.getAddress())
+				.isLibrarian(userEntity.getIsLibrarian())
+				.isUser(userEntity.getIsUser())
+				.createdAt(userEntity.getCreatedAt())
+				.build();
+	}
+	
 	public static Book bookDtoToEntity(BookDto bookDto) {
 		return Book.builder()
 				.bookId(bookDto.getBookId())
@@ -37,6 +51,20 @@ public class LibraryUtils {
 				.addedDate(bookDto.getAddedDate())
 				.totalCopies(bookDto.getTotalCopies())
 				.availableCopies(bookDto.getAvailableCopies())
+				.build();
+	}
+	
+	public static BookDto bookEntityToDto(Book bookEntity) {
+		return BookDto.builder()
+				.bookId(bookEntity.getBookId())
+				.bookImgUrl(bookEntity.getBookImgUrl())
+				.bookName(bookEntity.getBookName())
+				.author(bookEntity.getAuthor())
+				.genre(bookEntity.getGenre())
+				.description(bookEntity.getDescription())
+				.addedDate(bookEntity.getAddedDate())
+				.totalCopies(bookEntity.getTotalCopies())
+				.availableCopies(bookEntity.getAvailableCopies())
 				.build();
 	}
 	

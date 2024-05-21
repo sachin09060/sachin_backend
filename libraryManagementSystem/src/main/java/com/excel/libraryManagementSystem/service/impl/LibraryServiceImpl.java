@@ -2,7 +2,9 @@ package com.excel.libraryManagementSystem.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,4 +78,28 @@ public class LibraryServiceImpl implements LibraryService {
 
 		return null;
 	}
+
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(LibraryUtils::userEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto getUserByUserId(String userId) {
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+        return userOptional.map(LibraryUtils::userEntityToDto).orElse(null);
+    }
+
+	@Override
+	public List<BookDto> getAllBooks() {
+		return bookRepository.findAll().stream().map(LibraryUtils::bookEntityToDto)
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public BookDto getBookByBookId(String bookId) {
+		Optional<Book> bookOptional = bookRepository.findByBookId(bookId);
+		return bookOptional.map(LibraryUtils::bookEntityToDto).orElse(null);
+	}
+
 }
