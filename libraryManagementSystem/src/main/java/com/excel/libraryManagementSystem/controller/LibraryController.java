@@ -82,8 +82,7 @@ public class LibraryController {
 			@RequestParam(name = "bookId",required = false) String bookId,
 			@RequestParam(name = "bookName",required = false) String bookName,
 			@RequestParam(name = "author",required = false) String author,
-			@RequestParam(name = "genre",required = false) Genre genre,
-			@RequestParam(name = "addedDate",required = false) LocalDate addedDate
+			@RequestParam(name = "genre",required = false) Genre genre
 			) {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllBooks(bookId, bookName, author, genre));
