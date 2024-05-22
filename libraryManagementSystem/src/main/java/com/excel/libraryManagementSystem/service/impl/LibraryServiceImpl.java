@@ -5,22 +5,33 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.excel.libraryManagementSystem.constant.BookConstants;
+import com.excel.libraryManagementSystem.constant.UserConstants;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.entity.Book;
 import com.excel.libraryManagementSystem.entity.BookHistory;
 import com.excel.libraryManagementSystem.entity.User;
+import com.excel.libraryManagementSystem.enums.Genre;
+import com.excel.libraryManagementSystem.exception.BookNotFoundException;
+import com.excel.libraryManagementSystem.exception.UserNotFoundException;
 import com.excel.libraryManagementSystem.repository.BookHistoryRepository;
 import com.excel.libraryManagementSystem.repository.BookRepository;
 import com.excel.libraryManagementSystem.repository.UserRepository;
 import com.excel.libraryManagementSystem.service.LibraryService;
 import com.excel.libraryManagementSystem.util.LibraryUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class LibraryServiceImpl implements LibraryService {
 	@Autowired
@@ -78,28 +89,148 @@ public class LibraryServiceImpl implements LibraryService {
 
 		return null;
 	}
+	
+//	Get Users_____________________________________________________________________________________________________
+	@Override
 
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream().map(LibraryUtils::userEntityToDto)
-                .collect(Collectors.toList());
-    }
+	
+	public List<UserDto> getAllUsers(String userId, String name, String email) {
+	    List<UserDto> collect = userRepository.findAll().stream()
+	            .map(LibraryUtils::userEntityToDto)
+	            .collect(Collectors.toList());
 
-    @Override
-    public UserDto getUserByUserId(String userId) {
-        Optional<User> userOptional = userRepository.findByUserId(userId);
-        return userOptional.map(LibraryUtils::userEntityToDto).orElse(null);
-    }
+	    if (userId != null) {
+	        return collect.stream()
+	                .filter(u -> u.getUserId().equals(userId))
+	                .collect(Collectors.toList());
+	    } 
+	    else if (name != null) {
+	        return collect.stream()
+	                .filter(u -> u.getName().equals(name))
+	                .collect(Collectors.toList());
+	    } 
+	    else if (email != null) {
+	    	return collect.stream()
+	    			.filter(u -> u.getEmail().equals(email))
+	    			.collect(Collectors.toList());
+	    }
+
+	    return collect;
+	}
+    
+//    ________________________________________________________________________________________________________________
+
+//	Get Books_________________________________________________________________________________________________________
 
 	@Override
-	public List<BookDto> getAllBooks() {
-		return bookRepository.findAll().stream().map(LibraryUtils::bookEntityToDto)
+	public List<BookDto> getAllBooks(String bookId, String bookName, String author,  Genre genre) {
+		 List<BookDto> collect = bookRepository.findAll().stream().map(LibraryUtils::bookEntityToDto)
 				.collect(Collectors.toList());
+
+		if(bookId!=null) {
+			return collect.stream().filter(b -> b.getBookId().equals(bookId)).collect(Collectors.toList());
+		}
+		else if(bookName!=null) {
+			return collect.stream().filter(b -> b.getBookName().equals(bookName)).collect(Collectors.toList());
+		}
+		else if(author!=null) {
+			return collect.stream().filter(b -> b.getAuthor().equals(author)).collect(Collectors.toList());
+		}
+		else if(genre!=null) {
+			return collect.stream().filter(b -> b.getGenre().equals(genre)).collect(Collectors.toList());
+		}
+
+
+		return collect;
+		
+	}
+	
+//  ________________________________________________________________________________________________________________
+
+
+	@Override
+	public List<BookHistoryDto> getAllHistory(String userId, String bookId) {
+		List<BookHistoryDto> collect = bookHistoryRepository.findAll().stream().map(LibraryUtils::bookHistoryEntityToDto)
+		.collect(Collectors.toList());
+		if(userId == null && bookId ==null) {
+			return collect;
+		}
+//		else if(userId!= null) {
+//			return collect.stream().filter(his -> his.getUserId().equals(userId)).collect(Collectors.toList());
+//		}
+//		
+//		else if(bookId!=null) {
+//			return collect.stream().filter(his -> his.getBookId().equals(bookId)).collect(Collectors.toList());
+//		}
+		return collect;
+	}
+	
+
+
+
+	@Override
+	public void deleteUser(UserDto userDto) {
+		Optional<User> userOptional = userRepository.findByUserId(userDto.getUserId());
+		if(userOptional.isPresent()) {
+			userRepository.delete(userOptional.get());
+		}else {
+			throw new UserNotFoundException(UserConstants.USER_ID_NOT_FOUND);
+		}
 	}
 
 	@Override
-	public BookDto getBookByBookId(String bookId) {
-		Optional<Book> bookOptional = bookRepository.findByBookId(bookId);
-		return bookOptional.map(LibraryUtils::bookEntityToDto).orElse(null);
+	public void deleteBook(BookDto bookDto) {
+		Optional<Book> bookOptional = bookRepository.findByBookId(bookDto.getBookId());
+		if(bookOptional.isPresent()) {
+			bookRepository.delete(bookOptional.get());
+		}else {
+			throw new BookNotFoundException(BookConstants.BOOK_ID_NOT_FOUND);
+		}
+		
 	}
 
+	@Override
+	public String updateUser(UserDto userDto) {
+		Optional<User> userOptional = userRepository.findByUserId(userDto.getUserId());
+		if(userOptional.isPresent()) {
+			User user = userOptional.get();
+			user.setUserId(userDto.getUserId());
+			user.setName(userDto.getName());
+			user.setGender(userDto.getGender());
+			user.setPhone(userDto.getPhone());
+			user.setEmail(userDto.getEmail());
+			user.setAddress(userDto.getAddress());
+			user.setIsLibrarian(userDto.getIsLibrarian());
+			user.setIsUser(userDto.getIsUser());
+			user.setCreatedAt(userDto.getCreatedAt());
+			
+			User updatedUser = userRepository.save(user);
+			
+			return userDto.getUserId();
+		}
+		return null;
+
+	}
+
+	@Override
+	public String updateBook(BookDto bookDto) {
+		Optional<Book> bookOptional = bookRepository.findByBookId(bookDto.getBookId());
+		if(bookOptional.isPresent()) {
+			Book book = bookOptional.get();
+			book.setBookId(bookDto.getBookId());
+			book.setBookName(bookDto.getBookName());
+			book.setBookImgUrl(bookDto.getBookImgUrl());
+			book.setAuthor(bookDto.getAuthor());
+			book.setGenre(bookDto.getGenre());
+			book.setDescription(bookDto.getDescription());
+			book.setAddedDate(bookDto.getAddedDate());
+			book.setTotalCopies(bookDto.getTotalCopies());
+			book.setAvailableCopies(bookDto.getAvailableCopies());
+			
+			Book updatedBook = bookRepository.save(book);
+			
+			return bookDto.getBookId();
+		}
+		return null;
+	}
 }

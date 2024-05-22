@@ -7,6 +7,7 @@ import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.entity.User;
+import com.excel.libraryManagementSystem.enums.Genre;
 
 public interface LibraryService {
 
@@ -16,12 +17,18 @@ public interface LibraryService {
 
 	String addTransactionsInfo(BookHistoryDto bookHistoryDto);
 
-	List<UserDto> getAllUsers();
+	List<UserDto> getAllUsers(String userId, String name, String email);
 
-	UserDto getUserByUserId(String userId);
+	List<BookDto> getAllBooks(String bookId, String bookName, String author,  Genre genre);
 
-	List<BookDto> getAllBooks();
+	List<BookHistoryDto> getAllHistory(String userId, String bookId);
 
-	BookDto getBookByBookId(String bookId);
+	void deleteUser(UserDto userDto);
+
+	void deleteBook(BookDto bookDto);
+
+	String updateUser(UserDto userDto);
+
+	String updateBook(BookDto bookDto);
 
 }

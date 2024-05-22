@@ -9,5 +9,5 @@ import com.excel.libraryManagementSystem.entity.Book;
 public interface BookRepository extends JpaRepository<Book, Integer>{
 	
 	Optional<Book> findByBookId(String bookId);
-	
+
 }

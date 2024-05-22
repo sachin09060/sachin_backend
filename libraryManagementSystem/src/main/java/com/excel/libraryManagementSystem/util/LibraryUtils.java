@@ -77,4 +77,16 @@ public class LibraryUtils {
 				.renewed(bookHistoryDto.getRenewed())
 				.build();
 	}
+	
+	public static BookHistoryDto bookHistoryEntityToDto(BookHistory bookHistoryEntity) {
+		return BookHistoryDto.builder()
+				.userId(bookHistoryEntity.getUser().getUserId())
+				.bookId(bookHistoryEntity.getBook().getBookId())
+				.issuedDate(bookHistoryEntity.getIssuedDate())
+				.dueDate(bookHistoryEntity.getDueDate())
+				.returnDate(bookHistoryEntity.getReturnDate())
+				.returned(bookHistoryEntity.getReturned())
+				.renewed(bookHistoryEntity.getRenewed())
+				.build();
+	}
 }
