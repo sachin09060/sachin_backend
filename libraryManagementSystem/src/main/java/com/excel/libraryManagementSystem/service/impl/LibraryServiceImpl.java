@@ -1,7 +1,9 @@
 package com.excel.libraryManagementSystem.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,6 +99,7 @@ public class LibraryServiceImpl implements LibraryService {
 	public List<UserDto> getAllUsers(String userId, String name, String email) {
 	    List<UserDto> collect = userRepository.findAll().stream()
 	            .map(LibraryUtils::userEntityToDto)
+	            .sorted(Comparator.comparing(UserDto::getCreatedAt).reversed())
 	            .collect(Collectors.toList());
 
 	    if (userId != null) {
@@ -125,6 +128,7 @@ public class LibraryServiceImpl implements LibraryService {
 	@Override
 	public List<BookDto> getAllBooks(String bookId, String bookName, String author,  Genre genre) {
 		 List<BookDto> collect = bookRepository.findAll().stream().map(LibraryUtils::bookEntityToDto)
+				.sorted(Comparator.comparing(BookDto::getAddedDate).reversed())
 				.collect(Collectors.toList());
 
 		if(bookId!=null) {
