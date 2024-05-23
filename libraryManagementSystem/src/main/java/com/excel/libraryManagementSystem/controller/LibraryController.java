@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +24,16 @@ import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.entity.User;
 import com.excel.libraryManagementSystem.enums.Genre;
+import com.excel.libraryManagementSystem.response.CommonResponse;
 import com.excel.libraryManagementSystem.service.LibraryService;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static com.excel.libraryManagementSystem.constant.UserConstants.USER_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.BookConstants.BOOK_ADDED_SUCCESS;
+
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "/api")
 public class LibraryController {
 	@Autowired
@@ -36,18 +42,20 @@ public class LibraryController {
 //	Add User__________________________________________________________________________________________________________
 	
 	@PostMapping(path = "/user/add")
-	public ResponseEntity<String> addUserInfo(@RequestBody UserDto userDto){
+	public ResponseEntity<CommonResponse<String>> addUserInfo(@RequestBody UserDto userDto){
 		String userId = libraryService.addUserInfo(userDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(userId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(userId)
+						.isError(false).message(USER_ADDED_SUCCESS).build());
 	}
 //	__________________________________________________________________________________________________________________
 	
 //	Add Book__________________________________________________________________________________________________________
 	
 	@PostMapping(path = "/book/add")
-	public ResponseEntity<String> addBookInfo(@RequestBody BookDto bookDto) {
+	public ResponseEntity<CommonResponse<String>> addBookInfo(@RequestBody BookDto bookDto) {
 		String bookId = libraryService.addBookInfo(bookDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(bookId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(bookId)
+				.isError(false).message(BOOK_ADDED_SUCCESS).build());
 	}
 	
 //	__________________________________________________________________________________________________________________

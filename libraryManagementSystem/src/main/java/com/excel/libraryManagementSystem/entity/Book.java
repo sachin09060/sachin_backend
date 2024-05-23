@@ -35,7 +35,7 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "book_id")
+	@Column(name = "book_id", unique = true)
 	private String bookId;
 	
 	@Column(name = "book_image_url")

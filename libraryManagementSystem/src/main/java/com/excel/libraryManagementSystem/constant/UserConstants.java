@@ -4,6 +4,8 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class UserConstants {
+	
+	public final static String USER_ADDED_SUCCESS = "User added successfully!";
 
 	public final static String USER_DELETED_SUCCESS = "User deleted successfully!";
 	

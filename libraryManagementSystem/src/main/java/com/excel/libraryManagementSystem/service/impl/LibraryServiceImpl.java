@@ -104,17 +104,17 @@ public class LibraryServiceImpl implements LibraryService {
 
 	    if (userId != null) {
 	        return collect.stream()
-	                .filter(u -> u.getUserId().equals(userId))
+	                .filter(u -> u.getUserId().equalsIgnoreCase(userId))
 	                .collect(Collectors.toList());
 	    } 
 	    else if (name != null) {
 	        return collect.stream()
-	                .filter(u -> u.getName().equals(name))
+	                .filter(u -> u.getName().equalsIgnoreCase(name))
 	                .collect(Collectors.toList());
 	    } 
 	    else if (email != null) {
 	    	return collect.stream()
-	    			.filter(u -> u.getEmail().equals(email))
+	    			.filter(u -> u.getEmail().equalsIgnoreCase(email))
 	    			.collect(Collectors.toList());
 	    }
 
@@ -126,28 +126,24 @@ public class LibraryServiceImpl implements LibraryService {
 //	Get Books_________________________________________________________________________________________________________
 
 	@Override
-	public List<BookDto> getAllBooks(String bookId, String bookName, String author,  Genre genre) {
-		 List<BookDto> collect = bookRepository.findAll().stream().map(LibraryUtils::bookEntityToDto)
-				.sorted(Comparator.comparing(BookDto::getAddedDate).reversed())
-				.collect(Collectors.toList());
+	public List<BookDto> getAllBooks(String bookId, String bookName, String author, Genre genre) {
+	    List<BookDto> collect = bookRepository.findAll().stream().map(LibraryUtils::bookEntityToDto)
+	            .sorted(Comparator.comparing(BookDto::getAddedDate).reversed())
+	            .collect(Collectors.toList());
 
-		if(bookId!=null) {
-			return collect.stream().filter(b -> b.getBookId().equals(bookId)).collect(Collectors.toList());
-		}
-		else if(bookName!=null) {
-			return collect.stream().filter(b -> b.getBookName().equals(bookName)).collect(Collectors.toList());
-		}
-		else if(author!=null) {
-			return collect.stream().filter(b -> b.getAuthor().equals(author)).collect(Collectors.toList());
-		}
-		else if(genre!=null) {
-			return collect.stream().filter(b -> b.getGenre().equals(genre)).collect(Collectors.toList());
-		}
+	    if (bookId != null) {
+	        return collect.stream().filter(b -> b.getBookId().equalsIgnoreCase(bookId)).collect(Collectors.toList());
+	    } else if (bookName != null) {
+	        return collect.stream().filter(b -> b.getBookName().equalsIgnoreCase(bookName)).collect(Collectors.toList());
+	    } else if (author != null) {
+	        return collect.stream().filter(b -> b.getAuthor().equalsIgnoreCase(author)).collect(Collectors.toList());
+	    } else if (genre != null) {
+	        return collect.stream().filter(b -> b.getGenre().equals(genre)).collect(Collectors.toList());
+	    }
 
-
-		return collect;
-		
+	    return collect;
 	}
+
 	
 //  ________________________________________________________________________________________________________________
 
@@ -190,7 +186,6 @@ public class LibraryServiceImpl implements LibraryService {
 		}else {
 			throw new BookNotFoundException(BookConstants.BOOK_ID_NOT_FOUND);
 		}
-		
 	}
 
 	@Override
