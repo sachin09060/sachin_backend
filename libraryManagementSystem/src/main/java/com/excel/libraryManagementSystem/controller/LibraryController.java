@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.excel.libraryManagementSystem.constant.UserConstants.USER_ADDED_SUCCESS;
 import static com.excel.libraryManagementSystem.constant.BookConstants.BOOK_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.BookHistoryConstants.BOOKHISTORY_ADDED_SUCCESS;
 
 
 @RestController
@@ -39,7 +40,7 @@ public class LibraryController {
 	@Autowired
 	private LibraryService libraryService;
 	
-//	Add User__________________________________________________________________________________________________________
+//	Add User_______________________________________________________________________________________________________________
 	
 	@PostMapping(path = "/user/add")
 	public ResponseEntity<CommonResponse<String>> addUserInfo(@RequestBody UserDto userDto){
@@ -47,9 +48,9 @@ public class LibraryController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(userId)
 						.isError(false).message(USER_ADDED_SUCCESS).build());
 	}
-//	__________________________________________________________________________________________________________________
+//	_______________________________________________________________________________________________________________________
 	
-//	Add Book__________________________________________________________________________________________________________
+//	Add Book_______________________________________________________________________________________________________________
 	
 	@PostMapping(path = "/book/add")
 	public ResponseEntity<CommonResponse<String>> addBookInfo(@RequestBody BookDto bookDto) {
@@ -58,20 +59,21 @@ public class LibraryController {
 				.isError(false).message(BOOK_ADDED_SUCCESS).build());
 	}
 	
-//	__________________________________________________________________________________________________________________
+//	_______________________________________________________________________________________________________________________
 
-//	Add Book History__________________________________________________________________________________________________________
+//	Add Book History_______________________________________________________________________________________________________
 
 	@PostMapping(path = "/history/add")
-	public ResponseEntity<String> addTransactionsInfo(@RequestBody BookHistoryDto bookHistoryDto) {
+	public ResponseEntity<CommonResponse<String>> addTransactionsInfo(@RequestBody BookHistoryDto bookHistoryDto) {
 		String transactionId = libraryService.addTransactionsInfo(bookHistoryDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(transactionId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(transactionId)
+				.isError(false).message(BOOKHISTORY_ADDED_SUCCESS).build());
 	}
 	
-//	__________________________________________________________________________________________________________________
+//	_______________________________________________________________________________________________________________________
 	
 	
-//	Get User____________________________________________________________________________________________________________
+//	Get User_______________________________________________________________________________________________________________
 	
 	@GetMapping(path = "/user")
 	public ResponseEntity<List<UserDto>> getallUsers(
@@ -83,7 +85,7 @@ public class LibraryController {
 		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllUsers(userId, name, email));
 	}
 	
-//	Get Book____________________________________________________________________________________________________________
+//	Get Book_______________________________________________________________________________________________________________
 	
 	@GetMapping(path = "/book")
 	public ResponseEntity<List<BookDto>> getAllBooks(
@@ -96,14 +98,14 @@ public class LibraryController {
 		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllBooks(bookId, bookName, author, genre));
 	}
 
-//	Get Book History____________________________________________________________________________________________________
+//	Get Book History_______________________________________________________________________________________________________
 	
 	@GetMapping(path = "/history")
 	public ResponseEntity<List<BookHistoryDto>> getAllHistory(@RequestParam(name = "userId",required = false) String userId, @RequestParam(name = "bookId",required = false) String bookId){
 		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllHistory(userId,bookId));
 	}
 	
-//	Delete User__________________________________________________________________________________________________________
+//	Delete User____________________________________________________________________________________________________________
 	
 	@DeleteMapping(path = "/user/delete")
 	public ResponseEntity<String> deleteUser(@RequestBody UserDto userDto) {
@@ -112,7 +114,7 @@ public class LibraryController {
 	}
 	
 	
-//	Delete Book___________________________________________________________________________________________________________
+//	Delete Book____________________________________________________________________________________________________________
 	
 	@DeleteMapping(path = "/book/delete")
 	public ResponseEntity<String> deleteBook(@RequestBody BookDto bookDto) {
@@ -128,6 +130,7 @@ public class LibraryController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userId);
 	}
 	
+//	Update Book_____________________________________________________________________________________________________________
 	@PutMapping(path = "/book/update")
 	public ResponseEntity<String> updateBook(@RequestBody BookDto bookDto) {
 		String bookId = libraryService.updateBook(bookDto);

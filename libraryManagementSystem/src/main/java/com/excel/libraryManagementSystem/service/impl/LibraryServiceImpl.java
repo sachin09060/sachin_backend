@@ -56,6 +56,8 @@ public class LibraryServiceImpl implements LibraryService {
 		Book bookEntity = LibraryUtils.bookDtoToEntity(bookDto);
 		return bookRepository.save(bookEntity).getBookId();
 	}
+	
+//	Add transactions___________________________________________________________________________________________________________
 
 	@Override
 	public String addTransactionsInfo(BookHistoryDto bookHistoryDto) {

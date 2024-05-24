@@ -34,7 +34,8 @@ public enum Genre {
 	FINANCE("FINANCE"),
 	MONEY("MONEY"),
 	PSYCHOLOGY("PSYCHOLOGY"),
-	TECHNOLOGY("TECHNOLOGY");
+	TECHNOLOGY("TECHNOLOGY"),
+	BIOLOGY("BIOLOGY");
 	
 	private final String genreType;
 }
