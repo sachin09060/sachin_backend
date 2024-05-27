@@ -15,18 +15,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.excel.libraryManagementSystem.constant.BookConstants;
+import com.excel.libraryManagementSystem.constant.ContactUsConstant;
 import com.excel.libraryManagementSystem.constant.UserConstants;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
+import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.entity.Book;
 import com.excel.libraryManagementSystem.entity.BookHistory;
+import com.excel.libraryManagementSystem.entity.Contact;
 import com.excel.libraryManagementSystem.entity.User;
 import com.excel.libraryManagementSystem.enums.Genre;
 import com.excel.libraryManagementSystem.exception.BookNotFoundException;
+import com.excel.libraryManagementSystem.exception.UserAlreadyPresentException;
 import com.excel.libraryManagementSystem.exception.UserNotFoundException;
 import com.excel.libraryManagementSystem.repository.BookHistoryRepository;
 import com.excel.libraryManagementSystem.repository.BookRepository;
+import com.excel.libraryManagementSystem.repository.ContactRepository;
 import com.excel.libraryManagementSystem.repository.UserRepository;
 import com.excel.libraryManagementSystem.service.LibraryService;
 import com.excel.libraryManagementSystem.util.LibraryUtils;
@@ -44,12 +49,22 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Autowired
 	private BookHistoryRepository bookHistoryRepository;
+	
+	@Autowired
+	private ContactRepository contactRepository;
 
+//	Add User Information________________________________________________________________________________________________________
 	@Override
 	public String addUserInfo(UserDto userDto) {
+		Optional<User> userOptional = userRepository.findByUserId(userDto.getUserId());
+		if(userOptional.isPresent()) {
+			throw new UserAlreadyPresentException(UserConstants.USER_ID_ALREADY_PRESENT);
+		}
 		User userEntity = LibraryUtils.userDtoToEntity(userDto);
 		return userRepository.save(userEntity).getUserId();
 	}
+	
+//	Add Book Information________________________________________________________________________________________________________
 
 	@Override
 	public String addBookInfo(BookDto bookDto) {
@@ -92,6 +107,14 @@ public class LibraryServiceImpl implements LibraryService {
 		}
 
 		return null;
+	}
+	
+	
+//	Add Contact us message__________________________________________________________________________________________________________
+@Override
+	public String addContactUs(ContactDto contactDto) {
+		Contact contactEntity = LibraryUtils.contactDtoToEntity(contactDto);
+		return contactRepository.save(contactEntity).getMessage();
 	}
 	
 //	Get Users_____________________________________________________________________________________________________
@@ -147,8 +170,10 @@ public class LibraryServiceImpl implements LibraryService {
 	}
 
 	
-//  ________________________________________________________________________________________________________________
+//  _________________________________________________________________________________________________________________________
 
+	
+//	Get Book History_________________________________________________________________________________________________________
 
 	@Override
 	public List<BookHistoryDto> getAllHistory(String userId, String bookId) {
@@ -157,18 +182,31 @@ public class LibraryServiceImpl implements LibraryService {
 		if(userId == null && bookId ==null) {
 			return collect;
 		}
-//		else if(userId!= null) {
-//			return collect.stream().filter(his -> his.getUserId().equals(userId)).collect(Collectors.toList());
-//		}
-//		
-//		else if(bookId!=null) {
-//			return collect.stream().filter(his -> his.getBookId().equals(bookId)).collect(Collectors.toList());
-//		}
 		return collect;
 	}
 	
+//	Get Message Requests_____________________________________________________________________________________________________
+
+	@Override
+	public List<ContactDto> getAllRequests(String name, String email) {
+		List<ContactDto> collect = contactRepository.findAll().stream().map(LibraryUtils::contactEntityToDto)
+		.collect(Collectors.toList());
+	    
+		if (name != null) {
+	        return collect.stream()
+	                .filter(u -> u.getName().equalsIgnoreCase(name))
+	                .collect(Collectors.toList());
+	    } 
+	    else if (email != null) {
+	    	return collect.stream()
+	    			.filter(u -> u.getEmail().equalsIgnoreCase(email))
+	    			.collect(Collectors.toList());
+	    }
+		return collect;
+	}
 
 
+// Delete user ______________________________________________________________________________________________________________
 
 	@Override
 	public void deleteUser(UserDto userDto) {
@@ -179,6 +217,8 @@ public class LibraryServiceImpl implements LibraryService {
 			throw new UserNotFoundException(UserConstants.USER_ID_NOT_FOUND);
 		}
 	}
+	
+//	Delete Book________________________________________________________________________________________________________________
 
 	@Override
 	public void deleteBook(BookDto bookDto) {
@@ -189,7 +229,21 @@ public class LibraryServiceImpl implements LibraryService {
 			throw new BookNotFoundException(BookConstants.BOOK_ID_NOT_FOUND);
 		}
 	}
+	
+//	Delete message request___________________________________________________________________________________________________
 
+	@Override
+	public void deleteMessageRequest(ContactDto contactDto) {
+	    Optional<Contact> optionalEmail = contactRepository.findByEmail(contactDto.getEmail());
+	    if (optionalEmail.isPresent()) {
+	        contactRepository.delete(optionalEmail.get());
+	    } else {
+	        throw new BookNotFoundException(ContactUsConstant.REQUEST_EMAIL_NOT_FOUNDS);
+	    }
+	}
+
+
+//	Update User_________________________________________________________________________________________________________________
 	@Override
 	public String updateUser(UserDto userDto) {
 		Optional<User> userOptional = userRepository.findByUserId(userDto.getUserId());
@@ -212,6 +266,8 @@ public class LibraryServiceImpl implements LibraryService {
 		return null;
 
 	}
+	
+//	Update Book__________________________________________________________________________________________________________________
 
 	@Override
 	public String updateBook(BookDto bookDto) {
@@ -231,7 +287,10 @@ public class LibraryServiceImpl implements LibraryService {
 			Book updatedBook = bookRepository.save(book);
 			
 			return bookDto.getBookId();
+		}else {
+			throw new BookNotFoundException(BookConstants.BOOK_ID_NOT_FOUND);
 		}
-		return null;
+		
 	}
+
 }

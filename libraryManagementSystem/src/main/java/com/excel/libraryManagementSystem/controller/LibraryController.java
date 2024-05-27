@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excel.libraryManagementSystem.constant.BookConstants;
+import com.excel.libraryManagementSystem.constant.ContactUsConstant;
 import com.excel.libraryManagementSystem.constant.UserConstants;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
+import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.entity.User;
 import com.excel.libraryManagementSystem.enums.Genre;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import static com.excel.libraryManagementSystem.constant.UserConstants.USER_ADDED_SUCCESS;
 import static com.excel.libraryManagementSystem.constant.BookConstants.BOOK_ADDED_SUCCESS;
 import static com.excel.libraryManagementSystem.constant.BookHistoryConstants.BOOKHISTORY_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.ContactUsConstant.CONTACTUS_MESSAGE_ADDED_SUCCESS;
 
 
 @RestController
@@ -73,6 +76,15 @@ public class LibraryController {
 //	_______________________________________________________________________________________________________________________
 	
 	
+//	Post ContactUs messages___________________________________________________________________________________________________
+	@PostMapping(path = "/contact/add")
+	public ResponseEntity<CommonResponse<String>>  addContactus(@RequestBody ContactDto contactDto) {
+		String contactUsMessage = libraryService.addContactUs(contactDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(contactUsMessage)
+				.isError(false).message(CONTACTUS_MESSAGE_ADDED_SUCCESS).build());
+	}
+
+	
 //	Get User_______________________________________________________________________________________________________________
 	
 	@GetMapping(path = "/user")
@@ -101,9 +113,20 @@ public class LibraryController {
 //	Get Book History_______________________________________________________________________________________________________
 	
 	@GetMapping(path = "/history")
-	public ResponseEntity<List<BookHistoryDto>> getAllHistory(@RequestParam(name = "userId",required = false) String userId, @RequestParam(name = "bookId",required = false) String bookId){
+	public ResponseEntity<List<BookHistoryDto>> getAllHistory(@RequestParam(name = "userId",required = false) String userId, 
+			@RequestParam(name = "bookId",required = false) String bookId){
 		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllHistory(userId,bookId));
 	}
+	
+	
+//	Get All Contact us messages_____________________________________________________________________________________________
+	@GetMapping(path = "/contact")
+	public ResponseEntity<List<ContactDto>> getAllRequests(
+			@RequestParam(name = "name",required = false) String name,
+			@RequestParam(name = "email",required = false) String email) {
+		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllRequests(name, email));
+	}
+	
 	
 //	Delete User____________________________________________________________________________________________________________
 	
@@ -115,11 +138,17 @@ public class LibraryController {
 	
 	
 //	Delete Book____________________________________________________________________________________________________________
-	
 	@DeleteMapping(path = "/book/delete")
 	public ResponseEntity<String> deleteBook(@RequestBody BookDto bookDto) {
 		libraryService.deleteBook(bookDto);
 		return ResponseEntity.ok(BookConstants.BOOK_DELETED_SUCCESS);
+	}
+	
+//	Delete Message Requests_______________________________________________________________________________________________
+	@DeleteMapping(path = "/contact/delete")
+	public ResponseEntity<String> deleteMessageRequest(@RequestBody ContactDto contactDto){
+		libraryService.deleteMessageRequest(contactDto);
+		return ResponseEntity.ok(ContactUsConstant.REQUEST_MESSAGE_DELETED_SUCCESS);
 	}
 	
 //	Update User____________________________________________________________________________________________________________
@@ -136,5 +165,7 @@ public class LibraryController {
 		String bookId = libraryService.updateBook(bookDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(bookId);
 	}
+
+	
 	
 }

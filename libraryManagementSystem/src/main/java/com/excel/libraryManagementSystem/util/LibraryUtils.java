@@ -5,9 +5,11 @@ import java.util.stream.Collectors;
 
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
+import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.entity.Book;
 import com.excel.libraryManagementSystem.entity.BookHistory;
+import com.excel.libraryManagementSystem.entity.Contact;
 import com.excel.libraryManagementSystem.entity.User;
 
 public class LibraryUtils {
@@ -87,6 +89,22 @@ public class LibraryUtils {
 				.returnDate(bookHistoryEntity.getReturnDate())
 				.returned(bookHistoryEntity.getReturned())
 				.renewed(bookHistoryEntity.getRenewed())
+				.build();
+	}
+	
+	public static Contact contactDtoToEntity(ContactDto contactDto) {
+		return Contact.builder()
+				.name(contactDto.getName())
+				.email(contactDto.getEmail())
+				.message(contactDto.getMessage())
+				.build();
+	}
+	
+	public static ContactDto contactEntityToDto(Contact contactEntity) {
+		return ContactDto.builder()
+				.name(contactEntity.getName())
+				.email(contactEntity.getEmail())
+				.message(contactEntity.getMessage())
 				.build();
 	}
 }

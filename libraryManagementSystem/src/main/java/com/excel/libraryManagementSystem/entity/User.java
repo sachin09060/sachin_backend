@@ -44,6 +44,7 @@ public class User {
 	
 	private Long phone;
 	
+	@Column(unique = true)
 	private String email;
 	
 	private String address;

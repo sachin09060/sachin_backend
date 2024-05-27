@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
+import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.entity.User;
 import com.excel.libraryManagementSystem.enums.Genre;
@@ -31,5 +32,11 @@ public interface LibraryService {
 	String updateUser(UserDto userDto);
 
 	String updateBook(BookDto bookDto);
+
+	String addContactUs(ContactDto contactDto);
+
+	List<ContactDto> getAllRequests(String name, String email);
+
+	void deleteMessageRequest(ContactDto contactDto);
 
 }
