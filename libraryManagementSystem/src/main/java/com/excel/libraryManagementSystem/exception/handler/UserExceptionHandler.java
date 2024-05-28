@@ -5,12 +5,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.excel.libraryManagementSystem.exception.UserAlreadyPresentException;
+import com.excel.libraryManagementSystem.response.CommonResponse;
 
 @RestControllerAdvice
 public class UserExceptionHandler {
 	
 	@ExceptionHandler(UserAlreadyPresentException.class)
-	public ResponseEntity<String> userAlreadyPresentExceptionHandler(RuntimeException exception){
-		return ResponseEntity.ok(exception.getMessage());
+	public ResponseEntity<CommonResponse<String>> userAlreadyPresentExceptionHandler(RuntimeException exception){
+		return ResponseEntity.ok(CommonResponse.<String>builder().isError(true).message(exception.getMessage()).build());
 	}
 }
