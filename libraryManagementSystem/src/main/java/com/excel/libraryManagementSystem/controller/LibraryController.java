@@ -1,8 +1,6 @@
 package com.excel.libraryManagementSystem.controller;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,16 +21,19 @@ import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
-import com.excel.libraryManagementSystem.entity.User;
 import com.excel.libraryManagementSystem.enums.Genre;
 import com.excel.libraryManagementSystem.response.CommonResponse;
 import com.excel.libraryManagementSystem.service.LibraryService;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.excel.libraryManagementSystem.constant.UserConstants.USER_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.UserConstants.GET_USER;
 import static com.excel.libraryManagementSystem.constant.BookConstants.BOOK_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.BookConstants.GET_BOOK;
 import static com.excel.libraryManagementSystem.constant.BookHistoryConstants.BOOKHISTORY_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.BookHistoryConstants.ALL_BOOK_HISTORIES;
 import static com.excel.libraryManagementSystem.constant.ContactUsConstant.CONTACTUS_MESSAGE_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.ContactUsConstant.GET_REQUEST;
 
 
 @RestController
@@ -88,43 +88,48 @@ public class LibraryController {
 //	Get User_______________________________________________________________________________________________________________
 	
 	@GetMapping(path = "/user")
-	public ResponseEntity<List<UserDto>> getallUsers(
+	public ResponseEntity<CommonResponse<List<UserDto>>> getallUsers(
 			@RequestParam(name = "userId",required = false) String userId,
 			@RequestParam(name = "name",required = false) String name,
 			@RequestParam(name = "email",required = false) String email
 			){
 		
-		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllUsers(userId, name, email));
+		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<UserDto>>builder().data(libraryService.getAllUsers(userId, name, email))
+				.isError(false).message(GET_USER).build());
 	}
 	
 //	Get Book_______________________________________________________________________________________________________________
 	
 	@GetMapping(path = "/book")
-	public ResponseEntity<List<BookDto>> getAllBooks(
+	public ResponseEntity<CommonResponse<List<BookDto>>> getAllBooks(
 			@RequestParam(name = "bookId",required = false) String bookId,
 			@RequestParam(name = "bookName",required = false) String bookName,
 			@RequestParam(name = "author",required = false) String author,
 			@RequestParam(name = "genre",required = false) Genre genre
 			) {
 		
-		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllBooks(bookId, bookName, author, genre));
+		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<BookDto>>builder().data(libraryService.getAllBooks(bookId, bookName, author, genre))
+				.isError(false).message(GET_BOOK).build());
 	}
 
 //	Get Book History_______________________________________________________________________________________________________
 	
 	@GetMapping(path = "/history")
-	public ResponseEntity<List<BookHistoryDto>> getAllHistory(@RequestParam(name = "userId",required = false) String userId, 
+	public ResponseEntity<CommonResponse<List<BookHistoryDto>>> getAllHistory(
+			@RequestParam(name = "userId",required = false) String userId, 
 			@RequestParam(name = "bookId",required = false) String bookId){
-		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllHistory(userId,bookId));
+		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<BookHistoryDto>>builder().data(libraryService.getAllHistory(userId,bookId))
+				.isError(false).message(ALL_BOOK_HISTORIES).build());
 	}
 	
 	
 //	Get All Contact us messages_____________________________________________________________________________________________
 	@GetMapping(path = "/contact")
-	public ResponseEntity<List<ContactDto>> getAllRequests(
+	public ResponseEntity<CommonResponse<List<ContactDto>>> getAllRequests(
 			@RequestParam(name = "name",required = false) String name,
 			@RequestParam(name = "email",required = false) String email) {
-		return ResponseEntity.status(HttpStatus.OK).body(libraryService.getAllRequests(name, email));
+		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<ContactDto>>builder().data(libraryService.getAllRequests(name, email))
+				.isError(false).message(GET_REQUEST).build());
 	}
 	
 	

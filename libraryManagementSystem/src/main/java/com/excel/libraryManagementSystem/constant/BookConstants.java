@@ -9,4 +9,6 @@ public class BookConstants {
 	public final static String BOOK_ADDED_SUCCESS = "Book added successfully!";
 	
 	public final static String BOOK_ID_NOT_FOUND = "Book not found!";
+	
+	public final static String GET_BOOK = "Successfully getting all books!";
 }

@@ -1,17 +1,13 @@
 package com.excel.libraryManagementSystem.service.impl;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.excel.libraryManagementSystem.constant.BookConstants;
@@ -36,9 +32,7 @@ import com.excel.libraryManagementSystem.repository.UserRepository;
 import com.excel.libraryManagementSystem.service.LibraryService;
 import com.excel.libraryManagementSystem.util.LibraryUtils;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class LibraryServiceImpl implements LibraryService {
 	@Autowired
@@ -142,7 +136,6 @@ public class LibraryServiceImpl implements LibraryService {
 	    			.filter(u -> u.getEmail().equalsIgnoreCase(email))
 	    			.collect(Collectors.toList());
 	    }
-
 	    return collect;
 	}
     
@@ -152,22 +145,31 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public List<BookDto> getAllBooks(String bookId, String bookName, String author, Genre genre) {
-	    List<BookDto> collect = bookRepository.findAll().stream().map(LibraryUtils::bookEntityToDto)
-	            .sorted(Comparator.comparing(BookDto::getAddedDate).reversed())
-	            .collect(Collectors.toList());
+        List<BookDto> collect = bookRepository.findAll().stream()
+                .map(LibraryUtils::bookEntityToDto)
+                .sorted(Comparator.comparing(BookDto::getAddedDate).reversed())
+                .collect(Collectors.toList());
 
-	    if (bookId != null) {
-	        return collect.stream().filter(b -> b.getBookId().equalsIgnoreCase(bookId)).collect(Collectors.toList());
-	    } else if (bookName != null) {
-	        return collect.stream().filter(b -> b.getBookName().equalsIgnoreCase(bookName)).collect(Collectors.toList());
-	    } else if (author != null) {
-	        return collect.stream().filter(b -> b.getAuthor().equalsIgnoreCase(author)).collect(Collectors.toList());
-	    } else if (genre != null) {
-	        return collect.stream().filter(b -> b.getGenre().equals(genre)).collect(Collectors.toList());
-	    }
+        if (bookId != null) {
+            return collect.stream()
+                    .filter(b -> b.getBookId().equalsIgnoreCase(bookId))
+                    .collect(Collectors.toList());
+        } else if (bookName != null) {
+            return collect.stream()
+                    .filter(b -> b.getBookName().toLowerCase().startsWith(bookName.toLowerCase()))
+                    .collect(Collectors.toList());
+        } else if (author != null) {
+            return collect.stream()
+                    .filter(b -> b.getAuthor().toLowerCase().startsWith(author.toLowerCase()))
+                    .collect(Collectors.toList());
+        } else if (genre != null) {
+            return collect.stream()
+                    .filter(b -> b.getGenre().equals(genre))
+                    .collect(Collectors.toList());
+        }
 
-	    return collect;
-	}
+        return collect;
+    }
 
 	
 //  _________________________________________________________________________________________________________________________

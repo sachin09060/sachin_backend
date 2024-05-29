@@ -6,5 +6,7 @@ import lombok.NoArgsConstructor;
 public class BookHistoryConstants {
 	
 	public final static String BOOKHISTORY_ADDED_SUCCESS = "One transaction added Successfully!";
+	
+	public final static String ALL_BOOK_HISTORIES = "Successfully getting all book histories !";
 
 }

@@ -1,8 +1,5 @@
 package com.excel.libraryManagementSystem.util;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
@@ -13,6 +10,8 @@ import com.excel.libraryManagementSystem.entity.Contact;
 import com.excel.libraryManagementSystem.entity.User;
 
 public class LibraryUtils {
+	
+//	User Dto to Entity_____________________________________________________________________________________________
 	
 	public static User userDtoToEntity(UserDto userDto) {
 		return User.builder()
@@ -28,6 +27,8 @@ public class LibraryUtils {
 				.build();
 	}
 	
+//	User Entity to Dto______________________________________________________________________________________________
+	
 	public static UserDto userEntityToDto(User userEntity) {
 		return UserDto.builder()
 				.userId(userEntity.getUserId())
@@ -41,6 +42,8 @@ public class LibraryUtils {
 				.createdAt(userEntity.getCreatedAt())
 				.build();
 	}
+	
+//	Book Dto to Entity______________________________________________________________________________________________
 	
 	public static Book bookDtoToEntity(BookDto bookDto) {
 		return Book.builder()
@@ -56,6 +59,8 @@ public class LibraryUtils {
 				.build();
 	}
 	
+//	Book Entity to Dto______________________________________________________________________________________________
+	
 	public static BookDto bookEntityToDto(Book bookEntity) {
 		return BookDto.builder()
 				.bookId(bookEntity.getBookId())
@@ -70,6 +75,8 @@ public class LibraryUtils {
 				.build();
 	}
 	
+//	Book History Dto to Entity______________________________________________________________________________________
+	
 	public static BookHistory bookHistoriesDtoToEntity(BookHistoryDto bookHistoryDto){
 		return BookHistory.builder()
 				.issuedDate(bookHistoryDto.getIssuedDate())
@@ -79,6 +86,8 @@ public class LibraryUtils {
 				.renewed(bookHistoryDto.getRenewed())
 				.build();
 	}
+	
+//	Book History Entity to Dto______________________________________________________________________________________
 	
 	public static BookHistoryDto bookHistoryEntityToDto(BookHistory bookHistoryEntity) {
 		return BookHistoryDto.builder()
@@ -92,6 +101,8 @@ public class LibraryUtils {
 				.build();
 	}
 	
+//	Contact Dto to Entity___________________________________________________________________________________________
+	
 	public static Contact contactDtoToEntity(ContactDto contactDto) {
 		return Contact.builder()
 				.name(contactDto.getName())
@@ -99,6 +110,8 @@ public class LibraryUtils {
 				.message(contactDto.getMessage())
 				.build();
 	}
+	
+//	Contact Entity to Dto___________________________________________________________________________________________
 	
 	public static ContactDto contactEntityToDto(Contact contactEntity) {
 		return ContactDto.builder()
