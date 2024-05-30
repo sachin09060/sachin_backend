@@ -1,6 +1,6 @@
 package com.excel.libraryManagementSystem.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.excel.libraryManagementSystem.enums.Gender;
 
@@ -25,5 +25,5 @@ public class UserDto {
 	private String address;
 	private Boolean isLibrarian;
 	private Boolean isUser;
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
 }

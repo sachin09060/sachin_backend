@@ -1,6 +1,6 @@
 package com.excel.libraryManagementSystem.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.excel.libraryManagementSystem.enums.Gender;
@@ -56,7 +56,7 @@ public class User {
 	private Boolean isUser;
 	
     @Column(name = "created_at")
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private List<Contact> contacts;

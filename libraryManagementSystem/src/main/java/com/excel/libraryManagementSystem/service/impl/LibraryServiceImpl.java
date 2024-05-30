@@ -115,7 +115,7 @@ public class LibraryServiceImpl implements LibraryService {
 	@Override
 
 	
-	public List<UserDto> getAllUsers(String userId, String name, String email) {
+	public List<UserDto> getAllUsers(String userId, String name, String email, String address) {
 	    List<UserDto> collect = userRepository.findAll().stream()
 	            .map(LibraryUtils::userEntityToDto)
 	            .sorted(Comparator.comparing(UserDto::getCreatedAt).reversed())
@@ -123,17 +123,22 @@ public class LibraryServiceImpl implements LibraryService {
 
 	    if (userId != null) {
 	        return collect.stream()
-	                .filter(u -> u.getUserId().equalsIgnoreCase(userId))
+	                .filter(u -> u.getUserId().toLowerCase().contains(userId))
 	                .collect(Collectors.toList());
 	    } 
 	    else if (name != null) {
 	        return collect.stream()
-	                .filter(u -> u.getName().equalsIgnoreCase(name))
+	                .filter(u -> u.getName().toLowerCase().contains(name))
 	                .collect(Collectors.toList());
 	    } 
 	    else if (email != null) {
 	    	return collect.stream()
-	    			.filter(u -> u.getEmail().equalsIgnoreCase(email))
+	    			.filter(u -> u.getEmail().toLowerCase().contains(email))
+	    			.collect(Collectors.toList());
+	    }
+	    else if (address != null) {
+	    	return collect.stream()
+	    			.filter(u -> u.getAddress().toLowerCase().contains(address))
 	    			.collect(Collectors.toList());
 	    }
 	    return collect;
@@ -152,15 +157,15 @@ public class LibraryServiceImpl implements LibraryService {
 
         if (bookId != null) {
             return collect.stream()
-                    .filter(b -> b.getBookId().equalsIgnoreCase(bookId))
+                    .filter(b -> b.getBookId().toLowerCase().contains(bookId))
                     .collect(Collectors.toList());
         } else if (bookName != null) {
             return collect.stream()
-                    .filter(b -> b.getBookName().toLowerCase().startsWith(bookName.toLowerCase()))
+                    .filter(b -> b.getBookName().toLowerCase().contains(bookName.toLowerCase()))
                     .collect(Collectors.toList());
         } else if (author != null) {
             return collect.stream()
-                    .filter(b -> b.getAuthor().toLowerCase().startsWith(author.toLowerCase()))
+                    .filter(b -> b.getAuthor().toLowerCase().contains(author.toLowerCase()))
                     .collect(Collectors.toList());
         } else if (genre != null) {
             return collect.stream()
@@ -179,12 +184,21 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public List<BookHistoryDto> getAllHistory(String userId, String bookId) {
-		List<BookHistoryDto> collect = bookHistoryRepository.findAll().stream().map(LibraryUtils::bookHistoryEntityToDto)
-		.collect(Collectors.toList());
-		if(userId == null && bookId ==null) {
-			return collect;
-		}
-		return collect;
+	    List<BookHistoryDto> allHistory = bookHistoryRepository.findAll().stream()
+	            .map(LibraryUtils::bookHistoryEntityToDto)
+	            .collect(Collectors.toList());
+
+	    if (userId != null) {
+	        return allHistory.stream()
+	                .filter(history -> history.getUserId().equals(userId))
+	                .collect(Collectors.toList());
+	    } else if (bookId != null) {
+	        return allHistory.stream()
+	                .filter(history -> history.getBookId().equals(bookId))
+	                .collect(Collectors.toList());
+	    } else {
+	        return allHistory;
+	    }
 	}
 	
 //	Get Message Requests_____________________________________________________________________________________________________

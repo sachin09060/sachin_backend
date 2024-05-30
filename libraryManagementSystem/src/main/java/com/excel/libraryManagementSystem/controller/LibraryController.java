@@ -91,10 +91,11 @@ public class LibraryController {
 	public ResponseEntity<CommonResponse<List<UserDto>>> getallUsers(
 			@RequestParam(name = "userId",required = false) String userId,
 			@RequestParam(name = "name",required = false) String name,
-			@RequestParam(name = "email",required = false) String email
+			@RequestParam(name = "email",required = false) String email,
+			@RequestParam(name = "address",required = false) String address
 			){
 		
-		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<UserDto>>builder().data(libraryService.getAllUsers(userId, name, email))
+		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<UserDto>>builder().data(libraryService.getAllUsers(userId, name, email,address))
 				.isError(false).message(GET_USER).build());
 	}
 	

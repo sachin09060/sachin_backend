@@ -1,6 +1,6 @@
 package com.excel.libraryManagementSystem.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.excel.libraryManagementSystem.enums.Genre;
@@ -52,7 +52,7 @@ public class Book {
 	private String description;
 	
 	@Column(name = "added_date")
-	private LocalDate addedDate;
+	private LocalDateTime addedDate;
 	
 	@Column(name = "total_copies")
 	private int totalCopies;

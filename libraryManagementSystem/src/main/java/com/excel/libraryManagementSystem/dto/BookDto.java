@@ -1,6 +1,6 @@
 package com.excel.libraryManagementSystem.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.excel.libraryManagementSystem.enums.Genre;
 
@@ -23,7 +23,7 @@ public class BookDto {
 	private String author;
 	private Genre genre;
 	private String description;
-	private LocalDate addedDate;
+	private LocalDateTime addedDate;
 	private int totalCopies;
 	private int availableCopies;
 	

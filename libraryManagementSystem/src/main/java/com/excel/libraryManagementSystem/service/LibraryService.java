@@ -1,14 +1,11 @@
 package com.excel.libraryManagementSystem.service;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
-import com.excel.libraryManagementSystem.entity.User;
 import com.excel.libraryManagementSystem.enums.Genre;
 
 public interface LibraryService {
@@ -19,7 +16,7 @@ public interface LibraryService {
 
 	String addTransactionsInfo(BookHistoryDto bookHistoryDto);
 
-	List<UserDto> getAllUsers(String userId, String name, String email);
+	List<UserDto> getAllUsers(String userId, String name, String email, String address);
 
 	List<BookDto> getAllBooks(String bookId, String bookName, String author,  Genre genre);
 
