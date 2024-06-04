@@ -13,18 +13,22 @@ import org.springframework.stereotype.Service;
 import com.excel.libraryManagementSystem.constant.BookConstants;
 import com.excel.libraryManagementSystem.constant.ContactUsConstant;
 import com.excel.libraryManagementSystem.constant.UserConstants;
+import com.excel.libraryManagementSystem.dto.AdminDto;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
+import com.excel.libraryManagementSystem.entity.Admin;
 import com.excel.libraryManagementSystem.entity.Book;
 import com.excel.libraryManagementSystem.entity.BookHistory;
 import com.excel.libraryManagementSystem.entity.Contact;
 import com.excel.libraryManagementSystem.entity.User;
 import com.excel.libraryManagementSystem.enums.Genre;
 import com.excel.libraryManagementSystem.exception.BookNotFoundException;
+import com.excel.libraryManagementSystem.exception.PasswordMismatchException;
 import com.excel.libraryManagementSystem.exception.UserAlreadyPresentException;
 import com.excel.libraryManagementSystem.exception.UserNotFoundException;
+import com.excel.libraryManagementSystem.repository.AdminRepository;
 import com.excel.libraryManagementSystem.repository.BookHistoryRepository;
 import com.excel.libraryManagementSystem.repository.BookRepository;
 import com.excel.libraryManagementSystem.repository.ContactRepository;
@@ -46,16 +50,22 @@ public class LibraryServiceImpl implements LibraryService {
 	
 	@Autowired
 	private ContactRepository contactRepository;
+	
+	@Autowired
+	private AdminRepository adminRepository;
 
 //	Add User Information________________________________________________________________________________________________________
 	@Override
 	public String addUserInfo(UserDto userDto) {
-		Optional<User> userOptional = userRepository.findByUserId(userDto.getUserId());
+		Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
 		if(userOptional.isPresent()) {
 			throw new UserAlreadyPresentException(UserConstants.USER_ID_ALREADY_PRESENT);
 		}
 		User userEntity = LibraryUtils.userDtoToEntity(userDto);
-		return userRepository.save(userEntity).getUserId();
+		if(!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+			throw new PasswordMismatchException(UserConstants.PASSWORD_MISMATCH);
+		}
+		return userRepository.save(userEntity).getEmail();
 	}
 	
 //	Add Book Information________________________________________________________________________________________________________
@@ -63,6 +73,9 @@ public class LibraryServiceImpl implements LibraryService {
 	@Override
 	public String addBookInfo(BookDto bookDto) {
 		Book bookEntity = LibraryUtils.bookDtoToEntity(bookDto);
+	    if (bookEntity.getAvailableCopies() > bookEntity.getTotalCopies()) {
+	        throw new IllegalArgumentException("Available copies cannot exceed total copies.");
+	    }
 		return bookRepository.save(bookEntity).getBookId();
 	}
 	
@@ -70,7 +83,7 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public String addTransactionsInfo(BookHistoryDto bookHistoryDto) {
-		Optional<User> userOptional = userRepository.findByUserId(bookHistoryDto.getUserId());
+		Optional<User> userOptional = userRepository.findByEmail(bookHistoryDto.getEmail());
 		Optional<Book> bookOptional = bookRepository.findByBookId(bookHistoryDto.getBookId());
 
 		if (userOptional.isPresent() && bookOptional.isPresent()) {
@@ -97,45 +110,45 @@ public class LibraryServiceImpl implements LibraryService {
 			bookHistoryEntity.setUser(userEntity);
 			bookHistoryEntity.setBook(bookEntity);
 			
-			return userRepository.save(userEntity).getUserId();
+			return userRepository.save(userEntity).getEmail();
 		}
 
 		return null;
 	}
 	
-	
 //	Add Contact us message__________________________________________________________________________________________________________
-@Override
+    @Override
 	public String addContactUs(ContactDto contactDto) {
 		Contact contactEntity = LibraryUtils.contactDtoToEntity(contactDto);
 		return contactRepository.save(contactEntity).getMessage();
 	}
-	
-//	Get Users_____________________________________________________________________________________________________
+    
+//  Add Admin_____________________________________________________________________________________________________________________
 	@Override
-
-	
-	public List<UserDto> getAllUsers(String userId, String name, String email, String address) {
+	public String addAdmin(AdminDto adminDto) {
+		Admin adminEntity = LibraryUtils.adminEntityToDto(adminDto);
+		return adminRepository.save(adminEntity).getAdminId();
+	}
+    
+    
+//	Get Users_______________________________________________________________________________________________________________________
+	@Override	
+	public List<UserDto> getAllUsers(String name, String email, String address) {
 	    List<UserDto> collect = userRepository.findAll().stream()
 	            .map(LibraryUtils::userEntityToDto)
 	            .sorted(Comparator.comparing(UserDto::getCreatedAt).reversed())
 	            .collect(Collectors.toList());
 
-	    if (userId != null) {
-	        return collect.stream()
-	                .filter(u -> u.getUserId().toLowerCase().contains(userId))
-	                .collect(Collectors.toList());
+	    if (email != null) {
+	    	return collect.stream()
+	    			.filter(u -> u.getEmail().toLowerCase().contains(email))
+	    			.collect(Collectors.toList());
 	    } 
 	    else if (name != null) {
 	        return collect.stream()
 	                .filter(u -> u.getName().toLowerCase().contains(name))
 	                .collect(Collectors.toList());
 	    } 
-	    else if (email != null) {
-	    	return collect.stream()
-	    			.filter(u -> u.getEmail().toLowerCase().contains(email))
-	    			.collect(Collectors.toList());
-	    }
 	    else if (address != null) {
 	    	return collect.stream()
 	    			.filter(u -> u.getAddress().toLowerCase().contains(address))
@@ -183,14 +196,14 @@ public class LibraryServiceImpl implements LibraryService {
 //	Get Book History_________________________________________________________________________________________________________
 
 	@Override
-	public List<BookHistoryDto> getAllHistory(String userId, String bookId) {
+	public List<BookHistoryDto> getAllHistory(String email, String bookId) {
 	    List<BookHistoryDto> allHistory = bookHistoryRepository.findAll().stream()
 	            .map(LibraryUtils::bookHistoryEntityToDto)
 	            .collect(Collectors.toList());
 
-	    if (userId != null) {
+	    if (email != null) {
 	        return allHistory.stream()
-	                .filter(history -> history.getUserId().equals(userId))
+	                .filter(history -> history.getEmail().equals(email))
 	                .collect(Collectors.toList());
 	    } else if (bookId != null) {
 	        return allHistory.stream()
@@ -204,7 +217,7 @@ public class LibraryServiceImpl implements LibraryService {
 //	Get Message Requests_____________________________________________________________________________________________________
 
 	@Override
-	public List<ContactDto> getAllRequests(String name, String email) {
+	public List<ContactDto> getAllRequests(String name, String contactEmail) {
 		List<ContactDto> collect = contactRepository.findAll().stream().map(LibraryUtils::contactEntityToDto)
 		.collect(Collectors.toList());
 	    
@@ -213,9 +226,9 @@ public class LibraryServiceImpl implements LibraryService {
 	                .filter(u -> u.getName().equalsIgnoreCase(name))
 	                .collect(Collectors.toList());
 	    } 
-	    else if (email != null) {
+	    else if (contactEmail != null) {
 	    	return collect.stream()
-	    			.filter(u -> u.getEmail().equalsIgnoreCase(email))
+	    			.filter(u -> u.getContactEmail().equalsIgnoreCase(contactEmail))
 	    			.collect(Collectors.toList());
 	    }
 		return collect;
@@ -226,7 +239,7 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public void deleteUser(UserDto userDto) {
-		Optional<User> userOptional = userRepository.findByUserId(userDto.getUserId());
+		Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
 		if(userOptional.isPresent()) {
 			userRepository.delete(userOptional.get());
 		}else {
@@ -250,7 +263,7 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public void deleteMessageRequest(ContactDto contactDto) {
-	    Optional<Contact> optionalEmail = contactRepository.findByEmail(contactDto.getEmail());
+	    Optional<Contact> optionalEmail = contactRepository.findByContactEmail(contactDto.getContactEmail());
 	    if (optionalEmail.isPresent()) {
 	        contactRepository.delete(optionalEmail.get());
 	    } else {
@@ -262,22 +275,20 @@ public class LibraryServiceImpl implements LibraryService {
 //	Update User_________________________________________________________________________________________________________________
 	@Override
 	public String updateUser(UserDto userDto) {
-		Optional<User> userOptional = userRepository.findByUserId(userDto.getUserId());
+		Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
 		if(userOptional.isPresent()) {
 			User user = userOptional.get();
-			user.setUserId(userDto.getUserId());
 			user.setName(userDto.getName());
 			user.setGender(userDto.getGender());
 			user.setPhone(userDto.getPhone());
-			user.setEmail(userDto.getEmail());
 			user.setAddress(userDto.getAddress());
-			user.setIsLibrarian(userDto.getIsLibrarian());
-			user.setIsUser(userDto.getIsUser());
+			user.setPassword(userDto.getPassword());
+			user.setConfirmPassword(userDto.getConfirmPassword());
 			user.setCreatedAt(userDto.getCreatedAt());
 			
 			User updatedUser = userRepository.save(user);
 			
-			return userDto.getUserId();
+			return userDto.getEmail();
 		}
 		return null;
 
@@ -309,4 +320,50 @@ public class LibraryServiceImpl implements LibraryService {
 		
 	}
 
+//	User Login_________________________________________________________________________________________________________________	
+		@Override
+		public String userLogin(UserDto dto) {
+			Optional<User> optional = userRepository.findByEmail(dto.getEmail());
+			if(optional.isPresent()) {
+				User user = optional.get();
+				if(user.getEmail().equals(dto.getEmail())
+						&& user.getPassword().equals(dto.getPassword())) {
+					return user.getEmail();
+				}
+				else {
+		              throw new UserNotFoundException(UserConstants.PASSWORD_NOT_PRESENT);
+				}	
+			}
+	        throw new UserNotFoundException(UserConstants.EMAIL_ID_NOT_PRESENT);
+		}
+		
+//	Admin Login_________________________________________________________________________________________________________________
+		@Override
+		public String adminLogin(AdminDto adminDto) {
+			Optional<Admin> optional = adminRepository.findByAdminId(adminDto.getAdminId());
+			if(optional.isPresent()) {
+				Admin admin = optional.get();
+				if(admin.getAdminId().equals(adminDto.getAdminId()) && 
+						admin.getPassword().equals(adminDto.getPassword())) {
+					return admin.getAdminId();
+				}
+				else {
+					throw new UserNotFoundException("AdminId Already Present!");
+				}
+			}
+			throw new UserNotFoundException("AdminId not Present!");
+		}
+		
+//	User forget password________________________________________________________________________________________________________
+		@Override
+		public String forgotPassword(UserDto dto) {
+			Optional<User> optional = userRepository.findByEmail(dto.getEmail());
+					if(optional.isPresent()) {
+						User user = optional.get();
+						user.setPassword(dto.getPassword());
+						user.setConfirmPassword(dto.getConfirmPassword());
+						return userRepository.save(user).getEmail();
+					}
+		        throw new UserNotFoundException("Invalid Email!");
+		}
 }

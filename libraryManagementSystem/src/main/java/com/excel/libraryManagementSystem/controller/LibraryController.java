@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.excel.libraryManagementSystem.constant.BookConstants;
 import com.excel.libraryManagementSystem.constant.ContactUsConstant;
 import com.excel.libraryManagementSystem.constant.UserConstants;
+import com.excel.libraryManagementSystem.dto.AdminDto;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
@@ -24,9 +25,11 @@ import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.enums.Genre;
 import com.excel.libraryManagementSystem.response.CommonResponse;
 import com.excel.libraryManagementSystem.service.LibraryService;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.excel.libraryManagementSystem.constant.UserConstants.USER_ADDED_SUCCESS;
+import static com.excel.libraryManagementSystem.constant.UserConstants.USER_UPDATED_SUCCESS;
 import static com.excel.libraryManagementSystem.constant.UserConstants.GET_USER;
 import static com.excel.libraryManagementSystem.constant.BookConstants.BOOK_ADDED_SUCCESS;
 import static com.excel.libraryManagementSystem.constant.BookConstants.GET_BOOK;
@@ -34,6 +37,7 @@ import static com.excel.libraryManagementSystem.constant.BookHistoryConstants.BO
 import static com.excel.libraryManagementSystem.constant.BookHistoryConstants.ALL_BOOK_HISTORIES;
 import static com.excel.libraryManagementSystem.constant.ContactUsConstant.CONTACTUS_MESSAGE_ADDED_SUCCESS;
 import static com.excel.libraryManagementSystem.constant.ContactUsConstant.GET_REQUEST;
+import static com.excel.libraryManagementSystem.constant.UserConstants.ADMIN_ADDED_SUCCESS;
 
 
 @RestController
@@ -47,9 +51,11 @@ public class LibraryController {
 	
 	@PostMapping(path = "/user/add")
 	public ResponseEntity<CommonResponse<String>> addUserInfo(@RequestBody UserDto userDto){
-		String userId = libraryService.addUserInfo(userDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(userId)
-						.isError(false).message(USER_ADDED_SUCCESS).build());
+		String email = libraryService.addUserInfo(userDto);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(CommonResponse.<String>builder()
+				.data(email)
+				.isError(false).message(USER_ADDED_SUCCESS).build());
 	}
 //	_______________________________________________________________________________________________________________________
 	
@@ -69,19 +75,35 @@ public class LibraryController {
 	@PostMapping(path = "/history/add")
 	public ResponseEntity<CommonResponse<String>> addTransactionsInfo(@RequestBody BookHistoryDto bookHistoryDto) {
 		String transactionId = libraryService.addTransactionsInfo(bookHistoryDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(transactionId)
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(CommonResponse.<String>builder()
+				.data(transactionId)
 				.isError(false).message(BOOKHISTORY_ADDED_SUCCESS).build());
 	}
 	
 //	_______________________________________________________________________________________________________________________
 	
 	
-//	Post ContactUs messages___________________________________________________________________________________________________
+//	Add ContactUs messages___________________________________________________________________________________________________
 	@PostMapping(path = "/contact/add")
 	public ResponseEntity<CommonResponse<String>>  addContactus(@RequestBody ContactDto contactDto) {
 		String contactUsMessage = libraryService.addContactUs(contactDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(contactUsMessage)
-				.isError(false).message(CONTACTUS_MESSAGE_ADDED_SUCCESS).build());
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(CommonResponse.<String>builder()
+				.data(contactUsMessage)
+				.isError(false)
+				.message(CONTACTUS_MESSAGE_ADDED_SUCCESS)
+				.build());
+	}
+	
+//	Add Admin_________________________________________________________________________________________________________________
+	@PostMapping(path = "/admin/add")
+	public ResponseEntity<CommonResponse<String>> addAdmin(@RequestBody AdminDto adminDto) {
+		String admin = libraryService.addAdmin(adminDto);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(CommonResponse.<String>builder()
+				.data(admin)
+				.isError(false).message(ADMIN_ADDED_SUCCESS).build());
 	}
 
 	
@@ -89,13 +111,13 @@ public class LibraryController {
 	
 	@GetMapping(path = "/user")
 	public ResponseEntity<CommonResponse<List<UserDto>>> getallUsers(
-			@RequestParam(name = "userId",required = false) String userId,
 			@RequestParam(name = "name",required = false) String name,
 			@RequestParam(name = "email",required = false) String email,
 			@RequestParam(name = "address",required = false) String address
 			){
 		
-		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<UserDto>>builder().data(libraryService.getAllUsers(userId, name, email,address))
+		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<UserDto>>builder()
+				.data(libraryService.getAllUsers(name, email,address))
 				.isError(false).message(GET_USER).build());
 	}
 	
@@ -117,9 +139,11 @@ public class LibraryController {
 	
 	@GetMapping(path = "/history")
 	public ResponseEntity<CommonResponse<List<BookHistoryDto>>> getAllHistory(
-			@RequestParam(name = "userId",required = false) String userId, 
+			@RequestParam(name = "email",required = false) String email, 
 			@RequestParam(name = "bookId",required = false) String bookId){
-		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<BookHistoryDto>>builder().data(libraryService.getAllHistory(userId,bookId))
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(CommonResponse.<List<BookHistoryDto>>builder()
+				.data(libraryService.getAllHistory(email,bookId))
 				.isError(false).message(ALL_BOOK_HISTORIES).build());
 	}
 	
@@ -128,8 +152,10 @@ public class LibraryController {
 	@GetMapping(path = "/contact")
 	public ResponseEntity<CommonResponse<List<ContactDto>>> getAllRequests(
 			@RequestParam(name = "name",required = false) String name,
-			@RequestParam(name = "email",required = false) String email) {
-		return ResponseEntity.status(HttpStatus.OK).body(CommonResponse.<List<ContactDto>>builder().data(libraryService.getAllRequests(name, email))
+			@RequestParam(name = "contactEmail",required = false) String contactEmail) {
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(CommonResponse.<List<ContactDto>>builder()
+				.data(libraryService.getAllRequests(name, contactEmail))
 				.isError(false).message(GET_REQUEST).build());
 	}
 	
@@ -160,9 +186,10 @@ public class LibraryController {
 //	Update User____________________________________________________________________________________________________________
 	
 	@PutMapping(path = "/user/update")
-	public ResponseEntity<String> updateUser(@RequestBody UserDto userDto) {
-		String userId = libraryService.updateUser(userDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(userId);
+	public ResponseEntity<CommonResponse<String>> updateUser(@RequestBody UserDto userDto) {
+		String email = libraryService.updateUser(userDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.<String>builder().data(email)
+				.isError(false).message(USER_UPDATED_SUCCESS).build());
 	}
 	
 //	Update Book_____________________________________________________________________________________________________________
@@ -174,4 +201,41 @@ public class LibraryController {
 
 	
 	
+//	User Login________________________________________________________________________________________________________________
+	
+	@PostMapping(path = "/user/login")
+	public ResponseEntity<CommonResponse<String>> userLogin(@RequestBody UserDto dto) {
+		String user = libraryService.userLogin(dto);
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(CommonResponse.<String>builder()
+						.data(user)
+						.isError(false)
+						.message("User Login Successfully!")
+						.build());
+	}
+	
+//	Admin Login_______________________________________________________________________________________________________________
+	@PostMapping(path = "/admin/login")
+	public ResponseEntity<CommonResponse<String>> adminLogin(@RequestBody AdminDto adminDto){
+		String adminLogin = libraryService.adminLogin(adminDto);
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(CommonResponse.<String>builder()
+						.data(adminLogin)
+						.isError(false)
+						.message("Admin Login Successfully!")
+						.build());
+	}
+	
+//	Forget password for user___________________________________________________________________________________________________
+	
+	  @PostMapping(path = "/user/forgetpassword")
+	   public ResponseEntity<CommonResponse<String>> forgotPassword(@RequestBody UserDto dto) {
+	    String  update = libraryService.forgotPassword(dto);  
+	    return ResponseEntity.status(HttpStatus.ACCEPTED )
+	    		.body(CommonResponse.<String>builder()
+	    				.data(update)
+	    				.isError(false)
+	    				.message("Password Updated")
+	    				.build());
+	   		}
 }

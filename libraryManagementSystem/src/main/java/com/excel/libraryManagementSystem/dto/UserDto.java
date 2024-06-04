@@ -17,13 +17,12 @@ import lombok.Setter;
 @Builder
 public class UserDto {
 	
-	private String userId;
 	private String name;
 	private Gender gender;
 	private Long phone;
 	private String email;
 	private String address;
-	private Boolean isLibrarian;
-	private Boolean isUser;
+	private String password;
+	private String confirmPassword;
 	private LocalDateTime createdAt;
 }

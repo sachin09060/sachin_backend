@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class BookHistoryDto {
-	private String userId;
+	private String email;
 	private String bookId;
 	private LocalDate issuedDate; 
 	private LocalDate dueDate;

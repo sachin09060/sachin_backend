@@ -8,6 +8,6 @@ import com.excel.libraryManagementSystem.entity.Contact;
 
 public interface ContactRepository extends JpaRepository<Contact, Integer>{
 
-	Optional<Contact> findByEmail(String email);
+	Optional<Contact> findByContactEmail(String contactEmail);
 
 }

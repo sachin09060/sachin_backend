@@ -60,6 +60,6 @@ public class Book {
 	@Column(name = "available_copies")
 	private int availableCopies;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "book")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH.MERGE.PERSIST.REFRESH, mappedBy = "book")
 	private List<BookHistory> bookHistories;
 }

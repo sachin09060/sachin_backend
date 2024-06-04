@@ -2,6 +2,7 @@ package com.excel.libraryManagementSystem.service;
 
 import java.util.List;
 
+import com.excel.libraryManagementSystem.dto.AdminDto;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
@@ -16,11 +17,11 @@ public interface LibraryService {
 
 	String addTransactionsInfo(BookHistoryDto bookHistoryDto);
 
-	List<UserDto> getAllUsers(String userId, String name, String email, String address);
+	List<UserDto> getAllUsers(String name, String email, String address);
 
 	List<BookDto> getAllBooks(String bookId, String bookName, String author,  Genre genre);
 
-	List<BookHistoryDto> getAllHistory(String userId, String bookId);
+	List<BookHistoryDto> getAllHistory(String email, String bookId);
 
 	void deleteUser(UserDto userDto);
 
@@ -32,8 +33,16 @@ public interface LibraryService {
 
 	String addContactUs(ContactDto contactDto);
 
-	List<ContactDto> getAllRequests(String name, String email);
+	List<ContactDto> getAllRequests(String name, String contactEmail);
 
 	void deleteMessageRequest(ContactDto contactDto);
+
+	String userLogin(UserDto dto);
+
+	String addAdmin(AdminDto adminDto);
+
+	String adminLogin(AdminDto adminDto);
+
+	String forgotPassword(UserDto dto);
 
 }

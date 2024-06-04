@@ -48,10 +48,10 @@ public class BookHistory {
     private Boolean renewed;
     
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "email")
     private User user;
     
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.DETACH.MERGE.PERSIST.REFRESH)
     @JoinColumn(name = "book_id")
     private Book book;
 }

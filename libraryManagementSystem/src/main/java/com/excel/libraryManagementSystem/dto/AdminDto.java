@@ -8,13 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ContactDto {
-	
-	private String name;
-	private String contactEmail;
-	private String message;
-	
+public class AdminDto {
+	private String adminId;
+	private String password;
 }

@@ -1,9 +1,11 @@
 package com.excel.libraryManagementSystem.util;
 
+import com.excel.libraryManagementSystem.dto.AdminDto;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
+import com.excel.libraryManagementSystem.entity.Admin;
 import com.excel.libraryManagementSystem.entity.Book;
 import com.excel.libraryManagementSystem.entity.BookHistory;
 import com.excel.libraryManagementSystem.entity.Contact;
@@ -15,14 +17,13 @@ public class LibraryUtils {
 	
 	public static User userDtoToEntity(UserDto userDto) {
 		return User.builder()
-				.userId(userDto.getUserId())
 				.name(userDto.getName())
 				.gender(userDto.getGender())
 				.phone(userDto.getPhone())
 				.email(userDto.getEmail())
 				.address(userDto.getAddress())
-				.isLibrarian(userDto.getIsLibrarian())
-				.isUser(userDto.getIsUser())
+				.password(userDto.getPassword())
+				.confirmPassword(userDto.getConfirmPassword())
 				.createdAt(userDto.getCreatedAt())
 				.build();
 	}
@@ -31,14 +32,13 @@ public class LibraryUtils {
 	
 	public static UserDto userEntityToDto(User userEntity) {
 		return UserDto.builder()
-				.userId(userEntity.getUserId())
 				.name(userEntity.getName())
 				.gender(userEntity.getGender())
 				.phone(userEntity.getPhone())
 				.email(userEntity.getEmail())
 				.address(userEntity.getAddress())
-				.isLibrarian(userEntity.getIsLibrarian())
-				.isUser(userEntity.getIsUser())
+				.password(userEntity.getPassword())
+				.confirmPassword(userEntity.getConfirmPassword())
 				.createdAt(userEntity.getCreatedAt())
 				.build();
 	}
@@ -91,7 +91,7 @@ public class LibraryUtils {
 	
 	public static BookHistoryDto bookHistoryEntityToDto(BookHistory bookHistoryEntity) {
 		return BookHistoryDto.builder()
-				.userId(bookHistoryEntity.getUser().getUserId())
+				.email(bookHistoryEntity.getUser().getEmail())
 				.bookId(bookHistoryEntity.getBook().getBookId())
 				.issuedDate(bookHistoryEntity.getIssuedDate())
 				.dueDate(bookHistoryEntity.getDueDate())
@@ -106,7 +106,7 @@ public class LibraryUtils {
 	public static Contact contactDtoToEntity(ContactDto contactDto) {
 		return Contact.builder()
 				.name(contactDto.getName())
-				.email(contactDto.getEmail())
+				.contactEmail(contactDto.getContactEmail())
 				.message(contactDto.getMessage())
 				.build();
 	}
@@ -116,8 +116,17 @@ public class LibraryUtils {
 	public static ContactDto contactEntityToDto(Contact contactEntity) {
 		return ContactDto.builder()
 				.name(contactEntity.getName())
-				.email(contactEntity.getEmail())
+				.contactEmail(contactEntity.getContactEmail())
 				.message(contactEntity.getMessage())
+				.build();
+	}
+	
+//	Admin Dto to Entity______________________________________________________________________________________________
+	
+	public static Admin adminEntityToDto(AdminDto adminDto) {
+		return Admin.builder()
+				.adminId(adminDto.getAdminId())
+				.password(adminDto.getPassword())
 				.build();
 	}
 }

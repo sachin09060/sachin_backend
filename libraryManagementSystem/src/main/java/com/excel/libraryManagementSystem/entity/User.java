@@ -34,9 +34,6 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "user_id",unique = true)
-	private String userId;
-	
 	private String name;
 	
 	@Enumerated(EnumType.STRING)
@@ -49,11 +46,10 @@ public class User {
 	
 	private String address;
 	
-	@Column(name = "is_librarian")
-	private Boolean isLibrarian;
+	private String password;
 	
-	@Column(name = "is_user")
-	private Boolean isUser;
+	@Column(name = "confirm_password")
+	private String confirmPassword;
 	
     @Column(name = "created_at")
 	private LocalDateTime createdAt;
