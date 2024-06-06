@@ -30,7 +30,7 @@ public class BookHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "history_id")
-	private int historyId;
+	private Integer historyId;
 	
 	@Column(name = "issued_date")
 	private LocalDate issuedDate; 

@@ -30,6 +30,8 @@ public interface LibraryService {
 	String updateUser(UserDto userDto);
 
 	String updateBook(BookDto bookDto);
+	
+	Integer updateBookHistory(BookHistoryDto bookHistoryDto);
 
 	String addContactUs(ContactDto contactDto);
 
@@ -37,12 +39,11 @@ public interface LibraryService {
 
 	void deleteMessageRequest(ContactDto contactDto);
 
-	String userLogin(UserDto dto);
+	UserDto userLogin(UserDto dto);
 
 	String addAdmin(AdminDto adminDto);
 
 	String adminLogin(AdminDto adminDto);
 
 	String forgotPassword(UserDto dto);
-
 }

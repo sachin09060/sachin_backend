@@ -170,7 +170,7 @@ public class LibraryServiceImpl implements LibraryService {
 
         if (bookId != null) {
             return collect.stream()
-                    .filter(b -> b.getBookId().toLowerCase().contains(bookId))
+                    .filter(b -> b.getBookId().equalsIgnoreCase(bookId))
                     .collect(Collectors.toList());
         } else if (bookName != null) {
             return collect.stream()
@@ -319,16 +319,40 @@ public class LibraryServiceImpl implements LibraryService {
 		}
 		
 	}
+	
+	
+//	Update Book History________________________________________________________________________________________________________
+
+	@Override
+	public Integer updateBookHistory(BookHistoryDto bookHistoryDto) {
+		Optional<BookHistory> optional = bookHistoryRepository.findByBookBookIdAndUserEmail(bookHistoryDto.getBookId(), bookHistoryDto.getEmail());
+		
+		if(optional.isPresent()) {
+			BookHistory history = optional.get();
+			history.setDueDate(bookHistoryDto.getDueDate());
+			history.setIssuedDate(bookHistoryDto.getIssuedDate());
+			history.setReturnDate(bookHistoryDto.getReturnDate());
+			history.setRenewed(bookHistoryDto.getRenewed());
+			history.setReturned(bookHistoryDto.getReturned());
+			
+			BookHistory updatedBookHidtory = bookHistoryRepository.save(history);
+			
+			return bookHistoryDto.getHistoryId();
+		}else {
+			throw new BookNotFoundException(BookConstants.BOOK_ID_NOT_FOUND);
+		}
+	}
+
 
 //	User Login_________________________________________________________________________________________________________________	
 		@Override
-		public String userLogin(UserDto dto) {
+		public UserDto userLogin(UserDto dto) {
 			Optional<User> optional = userRepository.findByEmail(dto.getEmail());
 			if(optional.isPresent()) {
 				User user = optional.get();
 				if(user.getEmail().equals(dto.getEmail())
 						&& user.getPassword().equals(dto.getPassword())) {
-					return user.getEmail();
+					return LibraryUtils.loginUserEntityToDto(user);
 				}
 				else {
 		              throw new UserNotFoundException(UserConstants.PASSWORD_NOT_PRESENT);
@@ -366,4 +390,5 @@ public class LibraryServiceImpl implements LibraryService {
 					}
 		        throw new UserNotFoundException("Invalid Email!");
 		}
+
 }

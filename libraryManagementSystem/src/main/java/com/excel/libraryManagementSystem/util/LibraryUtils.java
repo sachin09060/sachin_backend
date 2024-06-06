@@ -129,4 +129,16 @@ public class LibraryUtils {
 				.password(adminDto.getPassword())
 				.build();
 	}
+	
+//	Login_____________________________________________________________________________________________________________
+	public static UserDto loginUserEntityToDto(User userEntity) {
+		return UserDto.builder()
+				.name(userEntity.getName())
+				.gender(userEntity.getGender())
+				.phone(userEntity.getPhone())
+				.email(userEntity.getEmail())
+				.address(userEntity.getAddress())
+				.createdAt(userEntity.getCreatedAt())
+				.build();
+	}
 }
