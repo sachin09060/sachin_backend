@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excel.libraryManagementSystem.constant.BookConstants;
+import com.excel.libraryManagementSystem.constant.BookHistoryConstants;
 import com.excel.libraryManagementSystem.constant.ContactUsConstant;
 import com.excel.libraryManagementSystem.constant.UserConstants;
 import com.excel.libraryManagementSystem.dto.AdminDto;
@@ -83,37 +84,40 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public String addTransactionsInfo(BookHistoryDto bookHistoryDto) {
-		Optional<User> userOptional = userRepository.findByEmail(bookHistoryDto.getEmail());
-		Optional<Book> bookOptional = bookRepository.findByBookId(bookHistoryDto.getBookId());
+		Optional<BookHistory> optional = bookHistoryRepository.findByBookBookIdAndUserEmail(bookHistoryDto.getBookId(), bookHistoryDto.getEmail());
+		if(!optional.isPresent()) {
+			Optional<User> userOptional = userRepository.findByEmail(bookHistoryDto.getEmail());
+			Optional<Book> bookOptional = bookRepository.findByBookId(bookHistoryDto.getBookId());
 
-		if (userOptional.isPresent() && bookOptional.isPresent()) {
-			User userEntity = userOptional.get();
-			Book bookEntity = bookOptional.get();
-			BookHistory bookHistoryEntity = LibraryUtils.bookHistoriesDtoToEntity(bookHistoryDto);
+			if (userOptional.isPresent() && bookOptional.isPresent()) {
+				User userEntity = userOptional.get();
+				Book bookEntity = bookOptional.get();
+				BookHistory bookHistoryEntity = LibraryUtils.bookHistoriesDtoToEntity(bookHistoryDto);
 
-			if (userEntity.getBookHistories() != null) {
-				if (!userEntity.getBookHistories().contains(bookHistoryEntity))
-					userEntity.getBookHistories().add(bookHistoryEntity);
-			} else {
-				userEntity.setBookHistories(new ArrayList<>(Arrays.asList(bookHistoryEntity)));
+				if (userEntity.getBookHistories() != null) {
+					if (!userEntity.getBookHistories().contains(bookHistoryEntity))
+						userEntity.getBookHistories().add(bookHistoryEntity);
+				} else {
+					userEntity.setBookHistories(new ArrayList<>(Arrays.asList(bookHistoryEntity)));
+				}
+
+				if (bookEntity.getBookHistories() != null) {
+
+					if (!bookEntity.getBookHistories().contains(bookHistoryEntity))
+						bookEntity.getBookHistories().add(bookHistoryEntity);
+
+				} else {
+					bookEntity.setBookHistories(new ArrayList<>(Arrays.asList(bookHistoryEntity)));
+				}
+				
+				bookHistoryEntity.setUser(userEntity);
+				bookHistoryEntity.setBook(bookEntity);
+				
+				return userRepository.save(userEntity).getEmail();
 			}
 
-			if (bookEntity.getBookHistories() != null) {
-
-				if (!bookEntity.getBookHistories().contains(bookHistoryEntity))
-					bookEntity.getBookHistories().add(bookHistoryEntity);
-
-			} else {
-				bookEntity.setBookHistories(new ArrayList<>(Arrays.asList(bookHistoryEntity)));
-			}
-			
-			bookHistoryEntity.setUser(userEntity);
-			bookHistoryEntity.setBook(bookEntity);
-			
-			return userRepository.save(userEntity).getEmail();
 		}
-
-		return null;
+		throw new BookNotFoundException(BookHistoryConstants.BOOK_ALREADY_TAKEN);
 	}
 	
 //	Add Contact us message__________________________________________________________________________________________________________
@@ -390,5 +394,6 @@ public class LibraryServiceImpl implements LibraryService {
 					}
 		        throw new UserNotFoundException("Invalid Email!");
 		}
+		
 
 }

@@ -79,6 +79,7 @@ public class LibraryUtils {
 	
 	public static BookHistory bookHistoriesDtoToEntity(BookHistoryDto bookHistoryDto){
 		return BookHistory.builder()
+			
 				.issuedDate(bookHistoryDto.getIssuedDate())
 				.dueDate(bookHistoryDto.getDueDate())
 				.returnDate(bookHistoryDto.getReturnDate())

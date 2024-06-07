@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.excel.libraryManagementSystem.exception.BookNotFoundException;
 import com.excel.libraryManagementSystem.exception.PasswordMismatchException;
 import com.excel.libraryManagementSystem.exception.UserAlreadyPresentException;
 import com.excel.libraryManagementSystem.exception.UserNotFoundException;
@@ -23,12 +24,17 @@ public class UserExceptionHandler {
 	}
 	
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<CommonResponse<String>> UserNotFoundException(RuntimeException exception){
+	public ResponseEntity<CommonResponse<String>> userNotFoundException(RuntimeException exception){
 		return ResponseEntity.ok(CommonResponse.<String>builder().isError(true).message(exception.getMessage()).build());
 	}
 	
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<CommonResponse<String>> IllegalArgumentException(RuntimeException exception){
+	public ResponseEntity<CommonResponse<String>> illegalArgumentException(RuntimeException exception){
+		return ResponseEntity.ok(CommonResponse.<String>builder().isError(true).message(exception.getMessage()).build());
+	}
+	
+	@ExceptionHandler(BookNotFoundException.class)
+	public ResponseEntity<CommonResponse<String>> bookHistory(RuntimeException exception){
 		return ResponseEntity.ok(CommonResponse.<String>builder().isError(true).message(exception.getMessage()).build());
 	}
 }
