@@ -13,8 +13,9 @@ import lombok.Setter;
 @Builder
 public class ContactDto {
 	
+	private Integer id;
 	private String name;
-	private String contactEmail;
+	private String email;
 	private String message;
 	
 }

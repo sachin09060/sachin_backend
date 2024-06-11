@@ -106,8 +106,9 @@ public class LibraryUtils {
 	
 	public static Contact contactDtoToEntity(ContactDto contactDto) {
 		return Contact.builder()
+				.id(contactDto.getId())
 				.name(contactDto.getName())
-				.contactEmail(contactDto.getContactEmail())
+				.email(contactDto.getEmail())
 				.message(contactDto.getMessage())
 				.build();
 	}
@@ -116,8 +117,9 @@ public class LibraryUtils {
 	
 	public static ContactDto contactEntityToDto(Contact contactEntity) {
 		return ContactDto.builder()
+				.id(contactEntity.getId())
 				.name(contactEntity.getName())
-				.contactEmail(contactEntity.getContactEmail())
+				.email(contactEntity.getEmail())
 				.message(contactEntity.getMessage())
 				.build();
 	}

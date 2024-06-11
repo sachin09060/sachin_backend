@@ -55,9 +55,6 @@ public class User {
 	private LocalDateTime createdAt;
     
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Contact> contacts;
-    
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     private List<BookHistory> bookHistories;
     
 }

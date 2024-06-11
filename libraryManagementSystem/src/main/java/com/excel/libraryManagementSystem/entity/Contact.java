@@ -31,14 +31,9 @@ public class Contact {
 	
 	private String name;
 	
-	@Column(name = "contact_email", unique = true)
-	private String contactEmail;
+	private String email;
 	
 	@Column(length = 1000)
 	private String message;
-	
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(name = "email")
-	private User user;
 
 }

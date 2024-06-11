@@ -1,6 +1,7 @@
 package com.excel.libraryManagementSystem.service.impl;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.excel.libraryManagementSystem.constant.BookConstants;
@@ -36,10 +38,14 @@ import com.excel.libraryManagementSystem.repository.ContactRepository;
 import com.excel.libraryManagementSystem.repository.UserRepository;
 import com.excel.libraryManagementSystem.service.LibraryService;
 import com.excel.libraryManagementSystem.util.LibraryUtils;
+import org.springframework.mail.SimpleMailMessage;
 
 
 @Service
 public class LibraryServiceImpl implements LibraryService {
+	
+//	Initializing Repositories___________________________________________________________________________________________________
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -54,8 +60,12 @@ public class LibraryServiceImpl implements LibraryService {
 	
 	@Autowired
 	private AdminRepository adminRepository;
+	
+	@Autowired
+    private JavaMailSender emailSender;
 
 //	Add User Information________________________________________________________________________________________________________
+	
 	@Override
 	public String addUserInfo(UserDto userDto) {
 		Optional<User> userOptional = userRepository.findByEmail(userDto.getEmail());
@@ -79,6 +89,7 @@ public class LibraryServiceImpl implements LibraryService {
 	    }
 		return bookRepository.save(bookEntity).getBookId();
 	}
+	
 	
 //	Add transactions___________________________________________________________________________________________________________
 
@@ -161,7 +172,7 @@ public class LibraryServiceImpl implements LibraryService {
 	    return collect;
 	}
     
-//    ________________________________________________________________________________________________________________
+//  __________________________________________________________________________________________________________________
 
 //	Get Books_________________________________________________________________________________________________________
 
@@ -221,7 +232,7 @@ public class LibraryServiceImpl implements LibraryService {
 //	Get Message Requests_____________________________________________________________________________________________________
 
 	@Override
-	public List<ContactDto> getAllRequests(String name, String contactEmail) {
+	public List<ContactDto> getAllRequests(String name, String email) {
 		List<ContactDto> collect = contactRepository.findAll().stream().map(LibraryUtils::contactEntityToDto)
 		.collect(Collectors.toList());
 	    
@@ -230,9 +241,9 @@ public class LibraryServiceImpl implements LibraryService {
 	                .filter(u -> u.getName().equalsIgnoreCase(name))
 	                .collect(Collectors.toList());
 	    } 
-	    else if (contactEmail != null) {
+	    else if (email != null) {
 	    	return collect.stream()
-	    			.filter(u -> u.getContactEmail().equalsIgnoreCase(contactEmail))
+	    			.filter(u -> u.getEmail().equalsIgnoreCase(email))
 	    			.collect(Collectors.toList());
 	    }
 		return collect;
@@ -267,9 +278,9 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public void deleteMessageRequest(ContactDto contactDto) {
-	    Optional<Contact> optionalEmail = contactRepository.findByContactEmail(contactDto.getContactEmail());
-	    if (optionalEmail.isPresent()) {
-	        contactRepository.delete(optionalEmail.get());
+	    Optional<Contact> optional = contactRepository.findById(contactDto.getId());
+	    if (optional.isPresent()) {
+	        contactRepository.delete(optional.get());
 	    } else {
 	        throw new BookNotFoundException(ContactUsConstant.REQUEST_EMAIL_NOT_FOUNDS);
 	    }
@@ -290,7 +301,7 @@ public class LibraryServiceImpl implements LibraryService {
 			user.setConfirmPassword(userDto.getConfirmPassword());
 			user.setCreatedAt(userDto.getCreatedAt());
 			
-			User updatedUser = userRepository.save(user);
+			userRepository.save(user);
 			
 			return userDto.getEmail();
 		}
@@ -315,7 +326,7 @@ public class LibraryServiceImpl implements LibraryService {
 			book.setTotalCopies(bookDto.getTotalCopies());
 			book.setAvailableCopies(bookDto.getAvailableCopies());
 			
-			Book updatedBook = bookRepository.save(book);
+			bookRepository.save(book);
 			
 			return bookDto.getBookId();
 		}else {
@@ -323,6 +334,8 @@ public class LibraryServiceImpl implements LibraryService {
 		}
 		
 	}
+	
+
 	
 	
 //	Update Book History________________________________________________________________________________________________________
@@ -339,7 +352,7 @@ public class LibraryServiceImpl implements LibraryService {
 			history.setRenewed(bookHistoryDto.getRenewed());
 			history.setReturned(bookHistoryDto.getReturned());
 			
-			BookHistory updatedBookHidtory = bookHistoryRepository.save(history);
+			bookHistoryRepository.save(history);
 			
 			return bookHistoryDto.getHistoryId();
 		}else {
@@ -383,6 +396,7 @@ public class LibraryServiceImpl implements LibraryService {
 		}
 		
 //	User forget password________________________________________________________________________________________________________
+		
 		@Override
 		public String forgotPassword(UserDto dto) {
 			Optional<User> optional = userRepository.findByEmail(dto.getEmail());
@@ -395,5 +409,16 @@ public class LibraryServiceImpl implements LibraryService {
 		        throw new UserNotFoundException("Invalid Email!");
 		}
 		
+		
+//	Mail sending_________________________________________________________________________________________________________________
+		
+		@Override
+	    public void sendSimpleMessage(String to, String subject, String text) {
+	        SimpleMailMessage message = new SimpleMailMessage();
+	        message.setTo(to);
+	        message.setSubject(subject);
+	        message.setText(text);
+	        emailSender.send(message);
+	    }
 
 }

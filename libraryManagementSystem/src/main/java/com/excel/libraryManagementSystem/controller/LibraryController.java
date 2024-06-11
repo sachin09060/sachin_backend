@@ -21,6 +21,7 @@ import com.excel.libraryManagementSystem.dto.AdminDto;
 import com.excel.libraryManagementSystem.dto.BookDto;
 import com.excel.libraryManagementSystem.dto.BookHistoryDto;
 import com.excel.libraryManagementSystem.dto.ContactDto;
+import com.excel.libraryManagementSystem.dto.EmailRequestDto;
 import com.excel.libraryManagementSystem.dto.UserDto;
 import com.excel.libraryManagementSystem.enums.Genre;
 import com.excel.libraryManagementSystem.response.CommonResponse;
@@ -218,4 +219,11 @@ public class LibraryController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(CommonResponse.<String>builder().data(update).isError(false).message("Password Updated").build());
 	}
+	
+//	Mail sending________________________________________________________________________________________________________________
+	
+    @PostMapping("/send-email")
+    public void sendEmail(@RequestBody EmailRequestDto request) {
+    	libraryService.sendSimpleMessage(request.getTo(), request.getSubject(), request.getText());
+    }
 }
