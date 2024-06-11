@@ -191,6 +191,23 @@ public class LibraryController {
 				.body(transactionId);
 	}
 	
+//	Update Available Books(Decrement)__________________________________________________________________________________________________
+	
+	@PutMapping(path = "/history/updateAvailableBook")
+	public ResponseEntity<String> updateAvailableBook(@RequestBody BookDto bookDto) {
+		String bookId = libraryService.updateAvailableBook(bookDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(bookId);
+	}
+	
+	
+//	Update Available Books(Increment)__________________________________________________________________________________________________
+	
+	@PutMapping(path = "/history/incrementAvailableBook")
+	public ResponseEntity<String> incrementAvailableBook(@RequestBody BookDto bookDto) {
+		String bookId = libraryService.incrementAvailableBook(bookDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(bookId);
+	}
+	
 //	User Login______________________________________________________________________________________________________________
 
 	@PostMapping(path = "/user/login")
@@ -224,6 +241,9 @@ public class LibraryController {
 	
     @PostMapping("/send-email")
     public void sendEmail(@RequestBody EmailRequestDto request) {
-    	libraryService.sendSimpleMessage(request.getTo(), request.getSubject(), request.getText());
+    	libraryService.sendSimpleMessage(request.getTo(), 
+    			request.getSubject(), 
+    			request.getText()
+    			);
     }
 }

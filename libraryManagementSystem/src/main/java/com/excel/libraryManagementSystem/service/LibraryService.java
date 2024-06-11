@@ -86,4 +86,12 @@ public interface LibraryService {
 //	Email sending________________________________________________________________________________________
 	
 	void sendSimpleMessage(String to, String subject, String text);
+	
+//	Decrementing Available Books_______________________________________________________________________________
+	
+	String updateAvailableBook(BookDto bookDto);
+
+//	Incrementing Available Books_______________________________________________________________________________
+		
+	String incrementAvailableBook(BookDto bookDto);
 }

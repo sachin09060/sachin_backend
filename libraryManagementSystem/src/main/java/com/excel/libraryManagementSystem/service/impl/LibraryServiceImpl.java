@@ -335,8 +335,42 @@ public class LibraryServiceImpl implements LibraryService {
 		
 	}
 	
-
+// Update Available Books______________________________________________________________________________________________________
 	
+	@Override
+	public String updateAvailableBook(BookDto bookDto) {
+		Optional<Book> optional = bookRepository.findByBookId(bookDto.getBookId());
+		if(optional.isPresent()) {
+			Book book = optional.get();
+			Integer count = book.getAvailableCopies();
+			if (count>0) {
+				Integer available = count - 1;
+				book.setAvailableCopies(available);
+				Book save = bookRepository.save(book);
+				return save.getBookId();
+			}
+			
+			throw new BookNotFoundException("Book is not available!");
+		}
+		return null;
+	}
+	
+// Incrementing Available Books______________________________________________________________________________________________________
+
+	@Override
+	public String incrementAvailableBook(BookDto bookDto) {
+		Optional<Book> optional = bookRepository.findByBookId(bookDto.getBookId());
+		if(optional.isPresent()) {
+			Book book = optional.get();
+			Integer count = book.getAvailableCopies();
+			Integer available = count + 1;
+			
+			book.setAvailableCopies(available);
+			Book save = bookRepository.save(book);
+			return save.getBookId();
+		}
+		return null;
+	}
 	
 //	Update Book History________________________________________________________________________________________________________
 
