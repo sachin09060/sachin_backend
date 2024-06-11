@@ -338,7 +338,7 @@ public class LibraryServiceImpl implements LibraryService {
 // Update Available Books______________________________________________________________________________________________________
 	
 	@Override
-	public String updateAvailableBook(BookDto bookDto) {
+	public String decrementAvailableBook(BookDto bookDto) {
 		Optional<Book> optional = bookRepository.findByBookId(bookDto.getBookId());
 		if(optional.isPresent()) {
 			Book book = optional.get();

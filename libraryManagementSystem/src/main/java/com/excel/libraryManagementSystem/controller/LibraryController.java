@@ -193,9 +193,9 @@ public class LibraryController {
 	
 //	Update Available Books(Decrement)__________________________________________________________________________________________________
 	
-	@PutMapping(path = "/history/updateAvailableBook")
-	public ResponseEntity<String> updateAvailableBook(@RequestBody BookDto bookDto) {
-		String bookId = libraryService.updateAvailableBook(bookDto);
+	@PutMapping(path = "/history/decrementAvailableBook")
+	public ResponseEntity<String> decrementAvailableBook(@RequestBody BookDto bookDto) {
+		String bookId = libraryService.decrementAvailableBook(bookDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(bookId);
 	}
 	

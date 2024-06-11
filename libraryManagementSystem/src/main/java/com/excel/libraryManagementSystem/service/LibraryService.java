@@ -89,7 +89,7 @@ public interface LibraryService {
 	
 //	Decrementing Available Books_______________________________________________________________________________
 	
-	String updateAvailableBook(BookDto bookDto);
+	String decrementAvailableBook(BookDto bookDto);
 
 //	Incrementing Available Books_______________________________________________________________________________
 		
