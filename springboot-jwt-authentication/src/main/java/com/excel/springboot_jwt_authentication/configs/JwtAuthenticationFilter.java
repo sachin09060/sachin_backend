@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.excel.springboot_jwt_authentication.services.JwtService;
+import com.excel.springboot_jwt_authentication.services.JwtServiceImpl;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private HandlerExceptionResolver handlerExceptionResolver;
 
     @Autowired
-    private JwtService jwtService;
+    private JwtServiceImpl jwtService;
     
     @Autowired
     private UserDetailsService userDetailsService;

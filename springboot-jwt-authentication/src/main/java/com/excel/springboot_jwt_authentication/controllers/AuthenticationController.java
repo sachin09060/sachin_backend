@@ -16,14 +16,14 @@ import com.excel.springboot_jwt_authentication.dto.RegisterUserDto;
 import com.excel.springboot_jwt_authentication.entites.User;
 import com.excel.springboot_jwt_authentication.response.CommonResponse;
 import com.excel.springboot_jwt_authentication.services.AuthenticationService;
-import com.excel.springboot_jwt_authentication.services.JwtService;
+import com.excel.springboot_jwt_authentication.services.JwtServiceImpl;
 
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
     
     @Autowired
-    private JwtService jwtService;
+    private JwtServiceImpl jwtService;
     
     @Autowired
     private AuthenticationService authenticationService;
